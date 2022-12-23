@@ -43,3 +43,4 @@ DataBase
 2022-12-23 금
 - Service, Controller, Dto 패키지를 생성
 - UserService에 간단한 회원가입 메서드 구현
+- UserApiController 구현 (회원 가입, 회원 목록 조회)
