@@ -1,12 +1,15 @@
 package com.kjh.board.domain;
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
 @Table(name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -23,6 +26,5 @@ public class User extends BaseTimeEntity {
 
     @Column(length = 50, nullable = false, unique = true)
     private String email; // 사용자 이메일
-
 
 }
