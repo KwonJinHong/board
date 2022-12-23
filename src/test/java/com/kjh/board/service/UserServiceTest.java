@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -34,6 +37,21 @@ class UserServiceTest {
 
         //then
         System.out.println(userID);
+
+    }
+
+    @Test
+    public void 회원조회() throws Exception {
+        //given
+        User user = User.builder().username("kjh").nickname("크르르").phonenumber("01090765644").email("wlsghd328@gmail.com").build();
+        em.persist(user);
+
+        //when
+        List<UserDto> users = userService.findAll();
+
+        //then
+        System.out.println(users.get(0));
+
 
     }
 }
