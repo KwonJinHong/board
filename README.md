@@ -29,7 +29,7 @@ DataBase
 ![db설계](https://user-images.githubusercontent.com/108498668/208923244-9e2e14be-452e-4e69-ac50-0981bdb4bda0.png)
 
 ## History 
- 개발일지
+ 간단하게 남기는 프로젝트 구현 일지(?)
  
 2022-12-21 수
 - 사용자, 게시글, 댓글을 DB 테이블로 설계했다.
@@ -38,3 +38,7 @@ DataBase
 
 2022-12-22 목
 - Spring Data JPA를 활용하여 Repository 패키지 생성 및 각 엔티티 리포지토리 구현
+
+2022-12-23 금
+- Service, Controller, Dto 패키지를 생성
+- UserService에 간단한 회원가입 메서드 구현
