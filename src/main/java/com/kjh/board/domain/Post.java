@@ -1,12 +1,18 @@
 package com.kjh.board.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Post extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -24,5 +30,11 @@ public class Post extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Comment> comments;
+
+    //==게시글 업데이트==//
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
 }

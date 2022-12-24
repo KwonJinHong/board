@@ -1,10 +1,14 @@
 package com.kjh.board.dto;
 
 import com.kjh.board.domain.User;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class UserDto {
 
@@ -13,14 +17,6 @@ public class UserDto {
     private String nickname;
     private String phonenumber;
     private String email;
-
-    public UserDto(Long id, String username, String nickname, String phonenumber, String email) {
-        this.id = id;
-        this.username = username;
-        this.nickname = nickname;
-        this.phonenumber = phonenumber;
-        this.email = email;
-    }
 
     public UserDto(User user) {
         this.id = user.getId();

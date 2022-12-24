@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    List<User> findByUsername(String name);
+    /**
+     * 닉네임으로 User 정보 가져오기
+     * */
+    User findByNickname(String nickname);
 }

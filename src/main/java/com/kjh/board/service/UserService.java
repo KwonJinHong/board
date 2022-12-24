@@ -29,10 +29,11 @@ public class UserService {
 
     /**
      * Read
-     * 유저 조회
+     * 유저 전체 조회
      * */
     public List<UserDto> findAll() {
         List<User> user = userRepository.findAll();
+        //Entity -> DTO로 변환
         return user.stream().map(UserDto::new).collect(Collectors.toList());
     }
 
