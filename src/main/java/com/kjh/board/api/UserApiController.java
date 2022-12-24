@@ -23,9 +23,9 @@ public class UserApiController {
      * CREATE - 회원 등록
      * */
     @PostMapping("api/v1/users")
-    public ResponseEntity saveUserV1(@RequestBody @Valid UserDto userDto) {
+    public CreateMemberResponse saveUserV1(@RequestBody @Valid UserDto userDto) {
         Long id = userService.join(userDto);
-        return ResponseEntity.ok(id);
+        return new CreateMemberResponse(id);
     }
 
     /**
@@ -43,5 +43,11 @@ public class UserApiController {
         private T data;
     }
 
-
+    @Data
+    static class CreateMemberResponse {
+        private Long id;
+        public CreateMemberResponse(Long id) {
+            this.id = id;
+        }
+    }
 }
