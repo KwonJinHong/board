@@ -48,3 +48,8 @@ DataBase
 2022-12-24 토
 - PostService에 게시글 저장 및 조회 기능 구현, 기본적인 CRUD 기능 모두 구현할 예정
 - 조회는 게시글의 ID로 조회하는 기능과 전체 게시글 리스트 조회 기능을 구현
+
+:christmas_tree: 2022-12-25 일 :christmas_tree:
+- PostService 에 게시글 업데이트(수정), 게시글 삭제 기능 구현
+- 게시글 업데이트(수정)은 Dirty Checking 방식을 통해 구현하였다. Dirty Checking 방식은 원하는 속성만 업데이트가 가능하고, 병합 방식은 모든 속성을 변경하기 때문에 Null을 업데이트 할 위험이 있다 판단하였다.
+- PostSerivceTest 에 구현한 CRUD 기능들을 
