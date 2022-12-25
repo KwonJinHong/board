@@ -57,4 +57,27 @@ public class PostService {
 
         return new PostDto(post);
     }
+
+    /**
+     * UPDATE - 게시글 수정
+     * 병합(merge)방식이 아닌 Dirty Checking 방식 사용
+     * */
+    @Transactional
+    public void update(Long id, PostDto postDto) {
+        Post post = postRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("해당 id의 게시글이 존재하지 않습니다. id: " + id));
+
+        post.update(postDto.getTitle(), postDto.getContent());
+    }
+
+    /**
+     * Delete - 게시글 삭제
+     * */
+    @Transactional
+    public void delete(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("해당 id의 게시글이 존재하지 않습니다. id: " + id));
+
+        postRepository.delete(post);
+    }
 }
