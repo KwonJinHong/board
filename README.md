@@ -44,3 +44,7 @@ DataBase
 - Service, Controller, Dto 패키지를 생성
 - UserService에 간단한 회원가입 메서드 구현
 - UserApiController 구현 (회원 가입, 회원 목록 조회)
+
+2022-12-24 토
+- PostService에 게시글 저장 및 조회 기능 구현, 기본적인 CRUD 기능 모두 구현할 예정
+- 조회는 게시글의 ID로 조회하는 기능과 전체 게시글 리스트 조회 기능을 구현
