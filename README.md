@@ -63,4 +63,5 @@ DataBase
 - Test 도중 양방향 연관관계 편의 메서드에서 계속 nullpointerexception 발생했다. List<>를 new ArrayList<>()로 초기화 시켜줘도 계속 nullpointerexception이 발생했다. 몇시간 삽질 끝에 Entity에 @Builder 가 초기화 속성을 모두 무시한다는 사실을 알아냈다...... 그래서 Entity 전체의 @Builder 속성을 제거하고 Entity 안에 @Builder 를 사용한 생성자 메서드를 따로 만들어줘서 nullpointerexception 문제를 해결하였다.
 - 분리된 DTO로 기존 PostService, UserService를 다시 테스트하여 기능을 검증했다.
 - 각 Entitity에 연관관계 편의 메서드를 모두 추가했다.
+- CommentService CRUD 메서드 기능 테스트 완료!
  </details>
