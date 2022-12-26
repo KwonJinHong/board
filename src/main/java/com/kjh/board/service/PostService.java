@@ -26,7 +26,7 @@ public class PostService {
      * Create - 게시물 저장
      * */
     @Transactional
-    public Long save(PostDto postDto, String nickname) {
+    public Long save(PostDto.Request postDto, String nickname) {
         //닉네임으로 유저 정보 가져와 postDto에 넘겨준다.
         User user = userRepository.findByNickname(nickname);
         postDto.setUser(user);
@@ -41,21 +41,21 @@ public class PostService {
      * Read - 게시글 리스트 조회
      * 전체조회
      * */
-    public List<PostDto> findAll() {
+    public List<PostDto.Response> findAll() {
         List<Post> post = postRepository.findAll();
         //Entity -> DTO로 변환
-        return post.stream().map(PostDto::new).collect(Collectors.toList());
+        return post.stream().map(PostDto.Response::new).collect(Collectors.toList());
     }
 
     /**
      * Read - 게시글 리스트 조회
      * 단건 조회
      * */
-    public PostDto findById(Long id) {
+    public PostDto.Response findById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 id의 게시글이 존재하지 않습니다. id: " + id));
 
-        return new PostDto(post);
+        return new PostDto.Response(post);
     }
 
     /**
@@ -63,7 +63,7 @@ public class PostService {
      * 병합(merge)방식이 아닌 Dirty Checking 방식 사용
      * */
     @Transactional
-    public void update(Long id, PostDto postDto) {
+    public void update(Long id, PostDto.Request postDto) {
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("해당 id의 게시글이 존재하지 않습니다. id: " + id));
 

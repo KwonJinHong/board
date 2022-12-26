@@ -22,19 +22,19 @@ public class UserService {
      * 유저 등록
      * */
     @Transactional
-    public Long join(UserDto userdto) {
-        userRepository.save(userdto.toEntity());
-        return userdto.getId();
+    public Long join(UserDto.Request userDto) {
+        userRepository.save(userDto.toEntity());
+        return userDto.getId();
     }
 
     /**
      * Read
      * 유저 전체 조회
      * */
-    public List<UserDto> findAll() {
+    public List<UserDto.Response> findAll() {
         List<User> user = userRepository.findAll();
         //Entity -> DTO로 변환
-        return user.stream().map(UserDto::new).collect(Collectors.toList());
+        return user.stream().map(UserDto.Response::new).collect(Collectors.toList());
     }
 
 

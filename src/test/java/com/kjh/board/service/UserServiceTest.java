@@ -32,7 +32,7 @@ class UserServiceTest {
         em.persist(user);
 
         //when
-        UserDto userDto = new UserDto(user);
+        UserDto.Request userDto = new UserDto.Request();
         Long userID = userService.join(userDto);
 
         //then
@@ -47,7 +47,7 @@ class UserServiceTest {
         em.persist(user);
 
         //when
-        List<UserDto> users = userService.findAll();
+        List<UserDto.Response> users = userService.findAll();
 
         //then
         System.out.println(users.get(0));

@@ -33,7 +33,7 @@ class PostServiceTest {
 
 
 
-    @Test
+    /*@Test
     public void 게시글_저장() throws Exception {
         //given
         User user = User.builder().username("kjh").nickname("dd").phonenumber("01090765644").email("dlgl@zmfmfm.gnw").build();
@@ -194,6 +194,6 @@ class PostServiceTest {
         assertEquals("해당 id의 게시글이 존재하지 않습니다. id: " + id, thrown.getMessage());
 
 
-    }
+    }*/
 
 }

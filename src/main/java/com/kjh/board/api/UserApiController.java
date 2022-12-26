@@ -23,7 +23,7 @@ public class UserApiController {
      * CREATE - 회원 등록
      * */
     @PostMapping("api/v1/users")
-    public CreateMemberResponse saveUserV1(@RequestBody @Valid UserDto userDto) {
+    public CreateMemberResponse saveUserV1(@RequestBody @Valid UserDto.Request userDto) {
         Long id = userService.join(userDto);
         return new CreateMemberResponse(id);
     }
@@ -33,7 +33,7 @@ public class UserApiController {
      * */
     @GetMapping("api/v1/users")
     public Result readUsersV1() {
-        List<UserDto> findUsers = userService.findAll();
+        List<UserDto.Response> findUsers = userService.findAll();
         return new Result(findUsers);
     }
 
