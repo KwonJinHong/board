@@ -54,4 +54,8 @@ DataBase
 - PostService 에 게시글 업데이트(수정), 게시글 삭제 기능 구현
 - 게시글 업데이트(수정)은 Dirty Checking 방식을 통해 구현하였다. Dirty Checking 방식은 원하는 속성만 업데이트가 가능하고, 병합 방식은 모든 속성을 변경하기 때문에 Null을 업데이트 할 위험이 있다 판단하였다.
 - PostSerivceTest 에 구현한 CRUD 기능들을 테스트 완료
+
+2022-12-26 월
+- PostService에 CRUD 메서드를 구현할 때도 느꼈었지만 CommentService CRUD 메서드를 구현하면서 더더욱 DTO를 Request DTO, Response DTO 분리가 필요하다고 느꼈다. 요청과 응답에 필요한 속성들이 달랐고 이를 하나의 DTO로 처리하기에는 서로 필요없는 속성들이 생겨났다. 그래서 DTO 클래스 안에 Static 클래스로 Request와 Response로 분리하였다. 이를 분리함에 따라 기존에 테스트했던 코드들을 수정해서 다시 테스트해야 하는 일이 생겼다. 다음부터 DTO를 설계할때 하나의 DTO로 모두 처리하기보단 응답과 반응의 경우를 생각해서 설계할 필요성을 느끼게 되었다.
+- 추후 모든 TEST 다시 작성해서 시험해야한다....
  </details>
