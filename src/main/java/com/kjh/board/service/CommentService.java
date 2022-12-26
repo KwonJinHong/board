@@ -28,14 +28,12 @@ public class CommentService {
      * */
     @Transactional
     public Long save(Long id, String nickname, CommentDto.Request commentDto) {
-        User user = userRepository.findByNickname(nickname);
-        Post post = postRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("댓글 달기 실패: 해당 ID의 게시글이 존재하지 않습니다. ID : " + id));
-
-        commentDto.setUser(user);
-        commentDto.setPost(post);
-
         Comment comment = commentDto.toEntity();
+
+        comment.confirmWriter(userRepository.findByNickname(nickname));
+        comment.confirmPost(postRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("댓글 달기 실패: 해당 ID의 게시글이 존재하지 않습니다. ID : " + id)));
+
         commentRepository.save(comment);
 
         return comment.getId();

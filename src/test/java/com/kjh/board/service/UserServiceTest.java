@@ -28,15 +28,21 @@ class UserServiceTest {
     @Test
     public void 회원가입() throws Exception {
         //given
-        User user = User.builder().username("kjh").nickname("크르르").phonenumber("01090765644").email("wlsghd328@gmail.com").build();
-        em.persist(user);
+        UserDto.Request userDto = UserDto.Request.builder()
+                .username("kjh")
+                .nickname("이히")
+                .phonenumber("01090765644")
+                .email("zmfmfm@dlgl.com")
+                .build();
 
         //when
-        UserDto.Request userDto = new UserDto.Request();
-        Long userID = userService.join(userDto);
+
+        userService.join(userDto);
+
+        Long id = userRepository.findByNickname(userDto.getNickname()).getId();
 
         //then
-        System.out.println(userID);
+        System.out.println(id);
 
     }
 
@@ -50,7 +56,7 @@ class UserServiceTest {
         List<UserDto.Response> users = userService.findAll();
 
         //then
-        System.out.println(users.get(0));
+        System.out.println(users.get(0).getNickname());
 
 
     }

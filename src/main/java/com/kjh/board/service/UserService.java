@@ -22,9 +22,8 @@ public class UserService {
      * 유저 등록
      * */
     @Transactional
-    public Long join(UserDto.Request userDto) {
+    public void join(UserDto.Request userDto) {
         userRepository.save(userDto.toEntity());
-        return userDto.getId();
     }
 
     /**

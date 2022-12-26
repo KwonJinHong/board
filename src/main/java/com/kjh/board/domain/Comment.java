@@ -1,17 +1,12 @@
 package com.kjh.board.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -28,15 +23,28 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    //==연관관계 생성 매서드==//
-    private void setPost(Post post) {
+    //==연관관계 편의 매서드==//
+    public void confirmWriter(User user) {
+        this.user = user;
+        user.addComment(this);
+    }
+
+    public void confirmPost(Post post) {
         this.post = post;
-        post.getComments().add(this);
+        post.addComment(this);
     }
 
     //==댓글 내용 수정(업데이트)==//
+
     public void update(String content) {
         this.content = content;
     }
 
+    @Builder
+    public Comment(Long id, User user, String content, Post post) {
+        this.id = id;
+        this.user = user;
+        this.content = content;
+        this.post = post;
+    }
 }

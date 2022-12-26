@@ -1,7 +1,9 @@
 package com.kjh.board.service;
 
+import com.kjh.board.domain.Comment;
 import com.kjh.board.domain.Post;
 import com.kjh.board.domain.User;
+import com.kjh.board.dto.CommentDto;
 import com.kjh.board.dto.PostDto;
 import com.kjh.board.repository.PostRepository;
 import com.kjh.board.repository.UserRepository;
@@ -27,33 +29,37 @@ class PostServiceTest {
     @Autowired PostService postService;
 
     @Autowired PostRepository postRepository;
+    @Autowired CommentService commentService;
 
     @Autowired UserRepository userRepository;
     @PersistenceContext EntityManager em;
 
 
 
-    /*@Test
+    @Test
     public void 게시글_저장() throws Exception {
         //given
         User user = User.builder().username("kjh").nickname("dd").phonenumber("01090765644").email("dlgl@zmfmfm.gnw").build();
         userRepository.save(user);
 
-        PostDto postDto = PostDto.builder()
+        PostDto.Request postDto = PostDto.Request.builder()
                 .title("이히1")
                 .user(user)
                 .content("오홍")
                 .build();
 
         //when
-        Long id = postService.save(postDto, user.getNickname());
-        Post getPost = postService.findById(id).toEntity();
+        postService.save(postDto, user.getNickname());
+
+        List<Post> postsList = postRepository.findAll();
+
+        Post post = postsList.get(0);
+
 
         //then
-        System.out.println(postDto.getUser());
-        assertEquals("이히1", getPost.getTitle(), "저장된 게시글 아이디 확인");
-        assertEquals("dd", getPost.getUser().getNickname(), "작성자 닉네임 확인");
-        assertEquals("오홍", getPost.getContent(), "저장된 게시글 내용 확인");
+        assertEquals("이히1", post.getTitle(), "저장된 게시글 아이디 확인");
+        assertEquals("dd", post.getUser().getNickname(), "작성자 닉네임 확인");
+        assertEquals("오홍", post.getContent(), "저장된 게시글 내용 확인");
     }
 
     @Test
@@ -62,43 +68,37 @@ class PostServiceTest {
         User user = User.builder().username("kjh").nickname("dd").phonenumber("01090765644").email("dlgl@zmfmfm.gnw").build();
         userRepository.save(user);
 
-        PostDto postDto1 = PostDto.builder()
+        PostDto.Request postDto1 = PostDto.Request.builder()
                 .title("이히1")
                 .user(user)
                 .content("오홍")
                 .build();
 
-        PostDto postDto2 = PostDto.builder()
+        PostDto.Request postDto2 = PostDto.Request.builder()
                 .title("이히2")
                 .user(user)
                 .content("오홍")
                 .build();
 
-        PostDto postDto3 = PostDto.builder()
+        PostDto.Request postDto3 = PostDto.Request.builder()
                 .title("이히3")
                 .user(user)
                 .content("오홍")
                 .build();
 
-        PostDto postDto4 = PostDto.builder()
+        PostDto.Request postDto4 = PostDto.Request.builder()
                 .title("이히4")
                 .user(user)
                 .content("오홍")
                 .build();
 
-        Long saveId1 = postService.save(postDto1, user.getNickname());
-        Long saveId2 = postService.save(postDto2, user.getNickname());
-        Long saveId3 = postService.save(postDto3, user.getNickname());
-        Long saveId4 = postService.save(postDto4, user.getNickname());
+        postService.save(postDto1, user.getNickname());
+        postService.save(postDto2, user.getNickname());
+        postService.save(postDto3, user.getNickname());
+        postService.save(postDto4, user.getNickname());
 
         //when
-
-        Post getPost1 = postService.findById(saveId1).toEntity();
-        Post getPost2 = postService.findById(saveId2).toEntity();
-        Post getPost3 = postService.findById(saveId3).toEntity();
-        Post getPost4 = postService.findById(saveId4).toEntity();
-
-        List<PostDto> all = postService.findAll();
+        List<PostDto.Response> all = postService.findAll();
 
         //then
         assertEquals("이히1", all.get(0).getTitle(), "저장된 게시글 아이디 확인");
@@ -124,7 +124,7 @@ class PostServiceTest {
         User user = User.builder().username("kjh").nickname("dd").phonenumber("01090765644").email("dlgl@zmfmfm.gnw").build();
         userRepository.save(user);
 
-        PostDto postDto1 = PostDto.builder()
+        PostDto.Request postDto1 = PostDto.Request.builder()
                 .title("이히1")
                 .user(user)
                 .content("오홍")
@@ -132,8 +132,16 @@ class PostServiceTest {
 
         Long id = postService.save(postDto1, user.getNickname());
 
+        CommentDto.Request commentDto = CommentDto.Request.builder()
+                .content("히히")
+                .build();
+
+        commentService.save(id, user.getNickname(), commentDto);
+
+
         //when
-        Post search = postService.findById(id).toEntity();
+        PostDto.Response search = postService.findById(id);
+
 
         //then
         assertEquals("이히1", search.getTitle(), "ID로 찾은 게시글의 제목이 같은지");
@@ -148,7 +156,7 @@ class PostServiceTest {
         User user = User.builder().username("kjh").nickname("dd").phonenumber("01090765644").email("dlgl@zmfmfm.gnw").build();
         userRepository.save(user);
 
-        PostDto postDto1 = PostDto.builder()
+        PostDto.Request postDto1 = PostDto.Request.builder()
                 .title("이히1")
                 .user(user)
                 .content("오홍")
@@ -158,13 +166,13 @@ class PostServiceTest {
 
         //when
 
-        PostDto updateDto = PostDto.builder()
+        PostDto.Request updateDto = PostDto.Request.builder()
                 .title("히히")
                 .content("호호")
                 .build();
 
         postService.update(id, updateDto);
-        Post update = postService.findById(id).toEntity();
+        PostDto.Response update = postService.findById(id);
 
         //then
         assertEquals("히히", update.getTitle());
@@ -178,7 +186,7 @@ class PostServiceTest {
         User user = User.builder().username("kjh").nickname("dd").phonenumber("01090765644").email("dlgl@zmfmfm.gnw").build();
         userRepository.save(user);
 
-        PostDto postDto1 = PostDto.builder()
+        PostDto.Request postDto1 = PostDto.Request.builder()
                 .title("이히1")
                 .user(user)
                 .content("오홍")
@@ -194,6 +202,6 @@ class PostServiceTest {
         assertEquals("해당 id의 게시글이 존재하지 않습니다. id: " + id, thrown.getMessage());
 
 
-    }*/
+    }
 
 }

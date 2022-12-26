@@ -31,9 +31,12 @@ public class CommentDto {
                     .id(id)
                     .user(user)
                     .content(content)
+                    .post(post)
                     .build();
+
             return comment;
         }
+
     }
 
     /**
@@ -63,36 +66,4 @@ public class CommentDto {
             this.postsId = comment.getPost().getId();
         }
     }
-
-
-
-
-  /*  private Long id;
-    private User user;
-    private String content;
-    private String createdDate;
-    private String modifiedDate;
-    private Post post;
-
-    public CommentDto(Comment comment) {
-        this.id = comment.getId();
-        this.user = comment.getUser();
-        this.content = comment.getContent();
-        this.createdDate = comment.getCreatedDate();
-        this.modifiedDate = comment.getModifiedDate();
-        this.post = comment.getPost();
-
-    }
-
-    //DTO -> Entity로 변환
-    public Comment toEntity() {
-        Comment comment = Comment.builder()
-                .id(id)
-                .user(user)
-                .content(content)
-                .build();
-
-
-        return comment;
-    }*/
 }
