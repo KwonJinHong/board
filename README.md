@@ -58,4 +58,9 @@ DataBase
 2022-12-26 월
 - PostService에 CRUD 메서드를 구현할 때도 느꼈었지만 CommentService CRUD 메서드를 구현하면서 더더욱 DTO를 Request DTO, Response DTO 분리가 필요하다고 느꼈다. 요청과 응답에 필요한 속성들이 달랐고 이를 하나의 DTO로 처리하기에는 서로 필요없는 속성들이 생겨났다. 그래서 DTO 클래스 안에 Static 클래스로 Request와 Response로 분리하였다. 이를 분리함에 따라 기존에 테스트했던 코드들을 수정해서 다시 테스트해야 하는 일이 생겼다. 다음부터 DTO를 설계할때 하나의 DTO로 모두 처리하기보단 응답과 반응의 경우를 생각해서 설계할 필요성을 느끼게 되었다.
 - 추후 모든 TEST 다시 작성해서 시험해야한다....
+
+2022-12-27 화
+- Test 도중 양방향 연관관계 편의 메서드에서 계속 nullpointerexception 발생했다. List<>를 new ArrayList<>()로 초기화 시켜줘도 계속 nullpointerexception이 발생했다. 몇시간 삽질 끝에 Entity에 @Builder 가 초기화 속성을 모두 무시한다는 사실을 알아냈다...... 그래서 Entity 전체의 @Builder 속성을 제거하고 Entity 안에 @Builder 를 사용한 생성자 메서드를 따로 만들어줘서 nullpointerexception 문제를 해결하였다.
+- 분리된 DTO로 기존 PostService, UserService를 다시 테스트하여 기능을 검증했다.
+- 각 Entitity에 연관관계 편의 메서드를 모두 추가했다.
  </details>
