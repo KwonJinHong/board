@@ -1,10 +1,9 @@
-# Board Project
+# Board API Project
 
 ## 시작하며
 ### 1. 프로젝트 소개
- 공부하면서 배운 지식들을 활용하여 웹 프로그래밍의 기본인 커뮤니티 게시판을 구현해보는 것이 1차 목표입니다. 
-<br> 그리고 이 게시판 프로젝트를 토대로 쇼핑몰 + 게시판이 합쳐진 중고거래사이트를 구현하는 것이 2차 목표입니다.
-<br> 조금 정리가 안된 느낌이지만 최대한 배운것들을 활용해서 제로베이스에서 배포까지 해보는 것을 최종 목표로 하고 있습니다.
+ 공부하면서 배운 지식들을 활용하여 웹 프로그래밍의 기본인 커뮤니티 게시판을 구현해보는 것이 목표입니다. (REST API)
+ 
 
 ### 2. 사용하는 기술
 #### 2-1. 백앤드
@@ -63,4 +62,5 @@ DataBase
 - Test 도중 양방향 연관관계 편의 메서드에서 계속 nullpointerexception 발생했다. List<>를 new ArrayList<>()로 초기화 시켜줘도 계속 nullpointerexception이 발생했다. 몇시간 삽질 끝에 Entity에 @Builder 가 초기화 속성을 모두 무시한다는 사실을 알아냈다...... 그래서 Entity 전체의 @Builder 속성을 제거하고 Entity 안에 @Builder 를 사용한 생성자 메서드를 따로 만들어줘서 nullpointerexception 문제를 해결하였다.
 - 분리된 DTO로 기존 PostService, UserService를 다시 테스트하여 기능을 검증했다.
 - 각 Entitity에 연관관계 편의 메서드를 모두 추가했다.
+- CommentService CRUD 메서드 기능 테스트 완료!
  </details>
