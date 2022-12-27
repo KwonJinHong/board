@@ -35,7 +35,7 @@ public class CommentService {
 
         comment.confirmWriter(userRepository.findByNickname(nickname));
         comment.confirmPost(postRepository.findById(id).orElseThrow(() ->
-                new PostException(PostExceptionType.POST_NOT_POUND)));
+                new PostException(PostExceptionType.POST_NOT_FOUND)));
 
         commentRepository.save(comment);
 
@@ -48,7 +48,7 @@ public class CommentService {
     public List<CommentDto.Response> findAll(Long id) {
         //게시글 ID로 해당 게시글을 찾아옴
         Post post = postRepository.findById(id).orElseThrow(() ->
-                new PostException(PostExceptionType.POST_NOT_POUND));
+                new PostException(PostExceptionType.POST_NOT_FOUND));
 
         //해당 게시글에 있는 댓글 리스트를 가져옴
         List<Comment> comments = post.getComments();
@@ -63,7 +63,7 @@ public class CommentService {
     @Transactional
     public void update(Long id, CommentDto.Request commentDto) {
         Comment comment = commentRepository.findById(id).orElseThrow(() ->
-            new CommentException(CommentExceptionType.NOT_POUND_COMMENT));
+            new CommentException(CommentExceptionType.NOT_FOUND_COMMENT));
 
         //댓글 내용 수정
         comment.update(commentDto.getContent());
@@ -75,7 +75,7 @@ public class CommentService {
     @Transactional
     public void delete(Long id) {
         Comment comment = commentRepository.findById(id).orElseThrow(() ->
-                new CommentException(CommentExceptionType.NOT_POUND_COMMENT));
+                new CommentException(CommentExceptionType.NOT_FOUND_COMMENT));
 
         commentRepository.delete(comment);
     }

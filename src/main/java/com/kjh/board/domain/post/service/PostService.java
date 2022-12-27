@@ -54,7 +54,7 @@ public class PostService {
      * */
     public PostDto.Response findById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() ->
-                new PostException(PostExceptionType.POST_NOT_POUND));
+                new PostException(PostExceptionType.POST_NOT_FOUND));
 
         return new PostDto.Response(post);
     }
@@ -66,7 +66,7 @@ public class PostService {
     @Transactional
     public void update(Long id, PostDto.Request postDto) {
         Post post = postRepository.findById(id).orElseThrow(() ->
-                new PostException(PostExceptionType.POST_NOT_POUND));
+                new PostException(PostExceptionType.POST_NOT_FOUND));
 
         post.update(postDto.getTitle(), postDto.getContent());
     }
@@ -77,7 +77,7 @@ public class PostService {
     @Transactional
     public void delete(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() ->
-                new PostException(PostExceptionType.POST_NOT_POUND));
+                new PostException(PostExceptionType.POST_NOT_FOUND));
 
         postRepository.delete(post);
     }

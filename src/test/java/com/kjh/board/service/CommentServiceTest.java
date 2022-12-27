@@ -1,6 +1,7 @@
 package com.kjh.board.service;
 
 import com.kjh.board.domain.comment.Comment;
+import com.kjh.board.domain.comment.exception.CommentException;
 import com.kjh.board.domain.comment.service.CommentService;
 import com.kjh.board.domain.post.service.PostService;
 import com.kjh.board.domain.user.User;
@@ -33,6 +34,7 @@ class CommentServiceTest {
     @Autowired
     CommentService commentService;
     @PersistenceContext EntityManager em;
+    CommentException commentException;
 
     @Test
     public void 댓글_생성() throws Exception {
@@ -168,8 +170,8 @@ class CommentServiceTest {
         commentService.delete(commentId);
 
         //then
-        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> commentService.delete(commentId));
-        assertEquals("해당 id의 댓글이 존재하지 않습니다. id: " + commentId, thrown.getMessage());
+        //IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> commentService.delete(commentId));
+        assertThrows(CommentException.class, () -> commentService.delete(commentId));
 
     }
 

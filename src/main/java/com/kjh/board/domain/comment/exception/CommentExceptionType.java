@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public enum CommentExceptionType implements BaseExceptionType {
 
-    NOT_POUND_COMMENT(800, HttpStatus.NOT_FOUND, "찾는 댓글이 없습니다");
+    NOT_FOUND_COMMENT(800, HttpStatus.NOT_FOUND, "찾는 댓글이 없습니다");
 
     private int errorCode;
     private HttpStatus httpStatus;

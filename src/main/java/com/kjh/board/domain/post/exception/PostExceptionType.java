@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public enum PostExceptionType implements BaseExceptionType {
 
-    POST_NOT_POUND(700, HttpStatus.NOT_FOUND, "찾는 게시글이 없습니다");
+    POST_NOT_FOUND(700, HttpStatus.NOT_FOUND, "찾는 게시글이 없습니다");
 
     private int errorCode;
     private HttpStatus httpStatus;
