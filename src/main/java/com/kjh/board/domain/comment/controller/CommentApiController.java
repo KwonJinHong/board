@@ -1,4 +1,4 @@
-package com.kjh.board.api;
+package com.kjh.board.domain.comment.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;

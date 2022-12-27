@@ -1,9 +1,7 @@
-package com.kjh.board.repository;
+package com.kjh.board.domain.user.repository;
 
-import com.kjh.board.domain.User;
+import com.kjh.board.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 

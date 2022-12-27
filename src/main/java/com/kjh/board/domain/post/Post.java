@@ -1,6 +1,8 @@
-package com.kjh.board.domain;
+package com.kjh.board.domain.post;
 
-import lombok.AllArgsConstructor;
+import com.kjh.board.domain.BaseTimeEntity;
+import com.kjh.board.domain.user.User;
+import com.kjh.board.domain.comment.Comment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,8 @@
-package com.kjh.board.dto;
+package com.kjh.board.domain.post.dto;
 
-import com.kjh.board.domain.Post;
-import com.kjh.board.domain.User;
+import com.kjh.board.domain.comment.dto.CommentDto;
+import com.kjh.board.domain.post.Post;
+import com.kjh.board.domain.user.User;
 import lombok.*;
 
 import java.util.List;

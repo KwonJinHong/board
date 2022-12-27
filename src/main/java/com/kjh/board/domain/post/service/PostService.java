@@ -1,14 +1,15 @@
-package com.kjh.board.service;
+package com.kjh.board.domain.post.service;
 
-import com.kjh.board.domain.Post;
-import com.kjh.board.domain.User;
-import com.kjh.board.dto.PostDto;
-import com.kjh.board.repository.PostRepository;
-import com.kjh.board.repository.UserRepository;
+import com.kjh.board.domain.post.Post;
+import com.kjh.board.domain.post.exception.PostException;
+import com.kjh.board.domain.post.exception.PostExceptionType;
+import com.kjh.board.domain.user.User;
+import com.kjh.board.domain.post.dto.PostDto;
+import com.kjh.board.domain.post.repository.PostRepository;
+import com.kjh.board.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,7 +54,7 @@ public class PostService {
      * */
     public PostDto.Response findById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 id의 게시글이 존재하지 않습니다. id: " + id));
+                new PostException(PostExceptionType.POST_NOT_POUND));
 
         return new PostDto.Response(post);
     }
@@ -65,7 +66,7 @@ public class PostService {
     @Transactional
     public void update(Long id, PostDto.Request postDto) {
         Post post = postRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 id의 게시글이 존재하지 않습니다. id: " + id));
+                new PostException(PostExceptionType.POST_NOT_POUND));
 
         post.update(postDto.getTitle(), postDto.getContent());
     }
@@ -76,7 +77,7 @@ public class PostService {
     @Transactional
     public void delete(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 id의 게시글이 존재하지 않습니다. id: " + id));
+                new PostException(PostExceptionType.POST_NOT_POUND));
 
         postRepository.delete(post);
     }

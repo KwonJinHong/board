@@ -1,5 +1,8 @@
-package com.kjh.board.domain;
+package com.kjh.board.domain.comment;
 
+import com.kjh.board.domain.BaseTimeEntity;
+import com.kjh.board.domain.post.Post;
+import com.kjh.board.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;

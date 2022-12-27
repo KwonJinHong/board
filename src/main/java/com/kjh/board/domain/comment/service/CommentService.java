@@ -1,12 +1,15 @@
-package com.kjh.board.service;
+package com.kjh.board.domain.comment.service;
 
-import com.kjh.board.domain.Comment;
-import com.kjh.board.domain.Post;
-import com.kjh.board.domain.User;
-import com.kjh.board.dto.CommentDto;
-import com.kjh.board.repository.CommentRepository;
-import com.kjh.board.repository.PostRepository;
-import com.kjh.board.repository.UserRepository;
+import com.kjh.board.domain.comment.Comment;
+import com.kjh.board.domain.comment.exception.CommentException;
+import com.kjh.board.domain.comment.exception.CommentExceptionType;
+import com.kjh.board.domain.post.Post;
+import com.kjh.board.domain.comment.dto.CommentDto;
+import com.kjh.board.domain.comment.repository.CommentRepository;
+import com.kjh.board.domain.post.exception.PostException;
+import com.kjh.board.domain.post.exception.PostExceptionType;
+import com.kjh.board.domain.post.repository.PostRepository;
+import com.kjh.board.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +35,7 @@ public class CommentService {
 
         comment.confirmWriter(userRepository.findByNickname(nickname));
         comment.confirmPost(postRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("댓글 달기 실패: 해당 ID의 게시글이 존재하지 않습니다. ID : " + id)));
+                new PostException(PostExceptionType.POST_NOT_POUND)));
 
         commentRepository.save(comment);
 
@@ -45,7 +48,7 @@ public class CommentService {
     public List<CommentDto.Response> findAll(Long id) {
         //게시글 ID로 해당 게시글을 찾아옴
         Post post = postRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 id의 게시글이 존재하지 않습니다. id: " + id));
+                new PostException(PostExceptionType.POST_NOT_POUND));
 
         //해당 게시글에 있는 댓글 리스트를 가져옴
         List<Comment> comments = post.getComments();
@@ -60,7 +63,7 @@ public class CommentService {
     @Transactional
     public void update(Long id, CommentDto.Request commentDto) {
         Comment comment = commentRepository.findById(id).orElseThrow(() ->
-            new IllegalArgumentException("해당 id의 댓글이 존재하지 않습니다. id: " + id));
+            new CommentException(CommentExceptionType.NOT_POUND_COMMENT));
 
         //댓글 내용 수정
         comment.update(commentDto.getContent());
@@ -72,7 +75,7 @@ public class CommentService {
     @Transactional
     public void delete(Long id) {
         Comment comment = commentRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("해당 id의 댓글이 존재하지 않습니다. id: " + id));
+                new CommentException(CommentExceptionType.NOT_POUND_COMMENT));
 
         commentRepository.delete(comment);
     }

@@ -1,6 +1,6 @@
-package com.kjh.board.repository;
+package com.kjh.board.domain.post.repository;
 
-import com.kjh.board.domain.Post;
+import com.kjh.board.domain.post.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostRepository extends JpaRepository<Post, Long> {

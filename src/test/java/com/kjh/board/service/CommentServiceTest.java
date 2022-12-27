@@ -1,13 +1,14 @@
 package com.kjh.board.service;
 
-import com.kjh.board.domain.Comment;
-import com.kjh.board.domain.Post;
-import com.kjh.board.domain.User;
-import com.kjh.board.dto.CommentDto;
-import com.kjh.board.dto.PostDto;
-import com.kjh.board.repository.CommentRepository;
-import com.kjh.board.repository.PostRepository;
-import com.kjh.board.repository.UserRepository;
+import com.kjh.board.domain.comment.Comment;
+import com.kjh.board.domain.comment.service.CommentService;
+import com.kjh.board.domain.post.service.PostService;
+import com.kjh.board.domain.user.User;
+import com.kjh.board.domain.comment.dto.CommentDto;
+import com.kjh.board.domain.post.dto.PostDto;
+import com.kjh.board.domain.comment.repository.CommentRepository;
+import com.kjh.board.domain.post.repository.PostRepository;
+import com.kjh.board.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,11 +25,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 class CommentServiceTest {
 
-    @Autowired PostService postService;
+    @Autowired
+    PostService postService;
     @Autowired PostRepository postRepository;
     @Autowired UserRepository userRepository;
     @Autowired CommentRepository commentRepository;
-    @Autowired CommentService commentService;
+    @Autowired
+    CommentService commentService;
     @PersistenceContext EntityManager em;
 
     @Test

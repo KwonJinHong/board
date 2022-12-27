@@ -1,6 +1,6 @@
-package com.kjh.board.dto;
+package com.kjh.board.domain.user.dto;
 
-import com.kjh.board.domain.User;
+import com.kjh.board.domain.user.User;
 import lombok.*;
 
 /**

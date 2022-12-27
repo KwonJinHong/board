@@ -1,19 +1,18 @@
 package com.kjh.board.service;
 
-import com.kjh.board.domain.Comment;
-import com.kjh.board.domain.Post;
-import com.kjh.board.domain.User;
-import com.kjh.board.dto.CommentDto;
-import com.kjh.board.dto.PostDto;
-import com.kjh.board.repository.PostRepository;
-import com.kjh.board.repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
+import com.kjh.board.domain.comment.service.CommentService;
+import com.kjh.board.domain.post.Post;
+import com.kjh.board.domain.post.exception.PostException;
+import com.kjh.board.domain.post.service.PostService;
+import com.kjh.board.domain.user.User;
+import com.kjh.board.domain.comment.dto.CommentDto;
+import com.kjh.board.domain.post.dto.PostDto;
+import com.kjh.board.domain.post.repository.PostRepository;
+import com.kjh.board.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,10 +25,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 class PostServiceTest {
 
-    @Autowired PostService postService;
+    @Autowired
+    PostService postService;
 
     @Autowired PostRepository postRepository;
-    @Autowired CommentService commentService;
+    @Autowired
+    CommentService commentService;
+
+    PostException postException;
 
     @Autowired UserRepository userRepository;
     @PersistenceContext EntityManager em;
@@ -198,8 +201,8 @@ class PostServiceTest {
         postService.delete(id);
 
         //then
-        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> postService.findById(id));
-        assertEquals("해당 id의 게시글이 존재하지 않습니다. id: " + id, thrown.getMessage());
+        PostException thrown = assertThrows(PostException.class, () -> postService.findById(id));
+        assertEquals("찾는 게시글이 없습니다", thrown.getExceptionType().getErrorMessage());
 
 
     }
