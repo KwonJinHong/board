@@ -63,4 +63,6 @@ DataBase
 - 분리된 DTO로 기존 PostService, UserService를 다시 테스트하여 기능을 검증했다.
 - 각 Entitity에 연관관계 편의 메서드를 모두 추가했다.
 - CommentService CRUD 메서드 기능 테스트 완료!
+- 패키지 구조를 변경하였다. 기존에는 domain, service, repostiory, controller, dto 등 각 패키지에 user, post, comment에 관련된 클래스들이 섞여있었다. 조금씩 클래스들이 늘어나고 난잡해지는 느낌이 들었다. 좀 더 깔끔하게 정리하여 아예 도메인 별로 관련된 클래스들을 나눠놓았다. (예를 들면, user 패키지에는 user에 관련된 dto, service, controller, exception 등만 존재하게끔) 이렇게 바꿔놓으니 직관성이 좀더 좋아진듯하다.
+- Exception 클래스들을 사용자 정의 클래스로 만들어놓았다. 기존에는 illegalargumentexception 하나만 사용했는데 이렇게 하니까 일일히 에러메세지를 정해줘야하고, 어느곳과 관련된 예외인지 직관성이 떨어진다고 느꼈다. 그래서 각 도메인 별로 사용자 정의 예외 클래스들을 구현해 각 서비스 메서드에 적용시켜 놓았다. HTTP STATUS 코드도 지정할 수 있어서 코드를 통해서도 어느곳과 관련된 예외인지 금방 알아차릴수 있다. (User - 6XX, Post - 7XX, Comment - 8XX 로 설정해놓았다.)
  </details>
