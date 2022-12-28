@@ -65,4 +65,11 @@ DataBase
 - CommentService CRUD 메서드 기능 테스트 완료!
 - 패키지 구조를 변경하였다. 기존에는 domain, service, repostiory, controller, dto 등 각 패키지에 user, post, comment에 관련된 클래스들이 섞여있었다. 조금씩 클래스들이 늘어나고 난잡해지는 느낌이 들었다. 좀 더 깔끔하게 정리하여 아예 도메인 별로 관련된 클래스들을 나눠놓았다. (예를 들면, user 패키지에는 user에 관련된 dto, service, controller, exception 등만 존재하게끔) 이렇게 바꿔놓으니 직관성이 좀더 좋아진듯하다.
 - Exception 클래스들을 사용자 정의 클래스로 만들어놓았다. 기존에는 illegalargumentexception 하나만 사용했는데 이렇게 하니까 일일히 에러메세지를 정해줘야하고, 어느곳과 관련된 예외인지 직관성이 떨어진다고 느꼈다. 그래서 각 도메인 별로 사용자 정의 예외 클래스들을 구현해 각 서비스 메서드에 적용시켜 놓았다. HTTP STATUS 코드도 지정할 수 있어서 코드를 통해서도 어느곳과 관련된 예외인지 금방 알아차릴수 있다. (User - 6XX, Post - 7XX, Comment - 8XX 로 설정해놓았다.)
+
+2022-12-28 수
+- Spring Security를 적용해 JWT까지 구현해 로그인 서비스를 구현해보고자 한다. 기존 User 엔티티에 password 속성을 추가해주었다.
+- Spring Security를 제대로 적용하기 위해 config 패키지를 만들어 SecurityConfig 클래스를 만들었다.
+- SecurityConfig에 기본적인 설정을 세팅했다. formlogin(), httpBasic(), csrf() 등 설정을 disable 시켜놨고, JWT 방식을 쓰기위해 sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)를 설정해주었다.
+- passwordEncoder를 사용해 password를 암호화 하는 테스트를 완료했다. (암호화된 비밀번호와 기존 비밀번호가 서로 매치되는 것도 확인!)
+
  </details>
