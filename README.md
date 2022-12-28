@@ -11,6 +11,7 @@
 - Java 11
 - SpringBoot 2.7.6
 - JPA (Spring Data JPA)
+- Spring Security & JWT
 
 Build Tool
 - Gradle 7.6
