@@ -1,6 +1,6 @@
 package com.kjh.board.domain.comment.exception;
 
-import com.kjh.board.exception.BaseExceptionType;
+import com.kjh.board.global.exception.BaseExceptionType;
 import org.springframework.http.HttpStatus;
 
 public enum CommentExceptionType implements BaseExceptionType {

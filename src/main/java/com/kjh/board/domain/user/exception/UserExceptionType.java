@@ -1,6 +1,6 @@
 package com.kjh.board.domain.user.exception;
 
-import com.kjh.board.exception.BaseExceptionType;
+import com.kjh.board.global.exception.BaseExceptionType;
 import org.springframework.http.HttpStatus;
 
 public enum UserExceptionType implements BaseExceptionType {

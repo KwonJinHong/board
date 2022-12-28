@@ -4,6 +4,7 @@ import com.kjh.board.domain.BaseTimeEntity;
 import com.kjh.board.domain.comment.Comment;
 import com.kjh.board.domain.post.Post;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ public class User extends BaseTimeEntity {
     @Column(length = 15, nullable = false, unique = true)
     private String username; // 사용자 ID, 추후에 password도 추가해서 로그인 기능 구현 예정
 
+    private String password;//비밀번호
+
     @Column(length = 30, nullable = false, unique = true)
     private String nickname; // 사용자가 정하는 닉네임
 
@@ -32,11 +35,18 @@ public class User extends BaseTimeEntity {
     @Column(length = 50, nullable = false, unique = true)
     private String email; // 사용자 이메일
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    //== 패스워드 암호화 ==//
+    public void encodePassword(PasswordEncoder passwordEncoder){
+        this.password = passwordEncoder.encode(password);
+    }
+
     //== 회원탈퇴 -> 작성한 게시물, 댓글 모두 삭제 ==//
 
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
-
 
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();

@@ -1,4 +1,4 @@
-package com.kjh.board.exception;
+package com.kjh.board.global.exception;
 
 public abstract class BaseException extends RuntimeException{
     public abstract BaseExceptionType getExceptionType();

@@ -1,7 +1,7 @@
 package com.kjh.board.domain.post.exception;
 
-import com.kjh.board.exception.BaseException;
-import com.kjh.board.exception.BaseExceptionType;
+import com.kjh.board.global.exception.BaseException;
+import com.kjh.board.global.exception.BaseExceptionType;
 
 public class PostException extends BaseException {
 
