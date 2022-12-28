@@ -26,7 +26,7 @@ DataBase
 ### 1. 패키지 구성
 
 ### 2. DB 설계
-![db설계](https://user-images.githubusercontent.com/108498668/208923244-9e2e14be-452e-4e69-ac50-0981bdb4bda0.png)
+![db설계_v2](https://user-images.githubusercontent.com/108498668/209804836-9b118871-00db-40e3-9cc2-79b8df18d738.png)
 
 ## History 
 <details>
