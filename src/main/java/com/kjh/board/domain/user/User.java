@@ -16,6 +16,8 @@ import static javax.persistence.CascadeType.ALL;
 @Getter
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -45,9 +47,11 @@ public class User extends BaseTimeEntity {
 
     //== 회원탈퇴 -> 작성한 게시물, 댓글 모두 삭제 ==//
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
@@ -60,15 +64,6 @@ public class User extends BaseTimeEntity {
     public void addComment(Comment comment){
         //comment의 user 설정은 comment에서 함
         comments.add(comment);
-    }
-
-    @Builder
-    public User(Long id, String username, String nickname, String phonenumber, String email) {
-        this.id = id;
-        this.username = username;
-        this.nickname = nickname;
-        this.phonenumber = phonenumber;
-        this.email = email;
     }
 
 
