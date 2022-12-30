@@ -87,4 +87,16 @@ DataBase
  3. LoginSuccessJWTProvideHandler : SimpleUrlAuthenticationSuccessHandler를 상속받아 구현, 추후에 JWT 발급하는 로직 추가 예정
  4. LoginFailureHandler : SimpleUrlAuthenticationFailureHandler를 상속받아 구현, 로그인 실패 여부를 판단하기 위해 작성
 
+2022-12-30 금
+- JWT 오픈소스 라이브러리 사용 : [auth0/java-jwt](https://github.com/auth0/java-jwt)
+- JWT 관련 서비스 JwtService 구현 및 테스트 하였다. (application-jwt.yml 파일에 시크릿, Access Token 과 Refresh Token의 유효 시간을 설정해주었다.) 주요 메서드는 아래와 같다.
+ 1. Access Token 생성 메서드 - 암호화 알고리즘은 HMAC256 방식을 택했다. 페이로드에는 유저 ID와 Password를 담았다. 유효 기간은 
+ 2. Refresh Token 생성 메서드 - Refresh Token은 이 프로젝트에서 DB에 저장하고 관리하려고 한다. users 테이블에 refresh token 속성을 추가하였다. Access Token을 재발급 받기 위한 용도로만 사용할 예정이라 따로 Access Token 처럼 유저의 다른 정보를 담지 않을 것이다.
+ 3. Refresh Token 업데이트, 제거 메서드
+ 4. Access Token 및 Refresh Token 전달 메서드
+ 5. Access Token 및 Refresh Token 헤더 설정 메서드
+ 6. Access Token 추출 메서드
+ 7. Access Token 에서 원하는 클레임 추출 메서드 (username or password)
+ 8. 토큰의 유효성 검사 메서드
+- Refresh Token을 DB에 저장하기 위해 User 엔티티 클래스에 refreshToken 속성 추가 및 Refresh Token 업데이트 및 제거 메서드 
  </details>
