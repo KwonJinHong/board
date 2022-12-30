@@ -82,7 +82,7 @@ DataBase
  4. 3과정에서 생성한 토큰을 AuthenticationManager의 Authenticate() 메서드 인자로 넘겨주고, 해당 메서드의 반환 결과인 Authentication 객체를 반환한다.
  
 - 이 프로젝트에서는 Form Login 방식이 아닌 JSON 으로 데이터를 받아올것이기 때문에 JSON 받아와 UsernamepasswordAuthenticationToken을 생성한다. 아래는 구현한 클래스에 대한 간단한 설명이다.
- 1. JsonUsernamePasswordAuthenticationFilter : AbstractAuthenticationProcessingFilter를 상속받는 클래스로 attemptAuthentication() 메서드에서 username과 password로 UsernamePasswordAuthenticationToken 만들어 getAuthenticationManager()의 authenticate 메서드 실행으로 반환
+ 1. JsonUsernamePasswordAuthenticationFilter : UsernamePasswordAuthenticationFilter 처럼 AbstractAuthenticationProcessingFilter를 상속받는 클래스로 attemptAuthentication() 메서드에서 JSON 데이터를 받아와  username과 password로 UsernamePasswordAuthenticationToken 만들어 getAuthenticationManager()의 authenticate 메서드 실행으로 반환
  2. LoginService : DB에서 username에 해당하는 값을 찾아와 반환 (비밀번호에 대한 검증은 DaoAuthenticationProvider에서 해준다. 따라서 DB에서 해당 User 정보를 찾아 반환만 해주면 된다.)
  3. LoginSuccessJWTProvideHandler : SimpleUrlAuthenticationSuccessHandler를 상속받아 구현, 추후에 JWT 발급하는 로직 추가 예정
  4. LoginFailureHandler : SimpleUrlAuthenticationFailureHandler를 상속받아 구현, 로그인 실패 여부를 판단하기 위해 작성
