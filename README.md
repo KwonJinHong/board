@@ -27,7 +27,8 @@ DataBase
 ### 1. 패키지 구성
 
 ### 2. DB 설계
-![db설계_v2](https://user-images.githubusercontent.com/108498668/209804836-9b118871-00db-40e3-9cc2-79b8df18d738.png)
+![db설게_v3](https://user-images.githubusercontent.com/108498668/210064564-4458fd7a-01ec-4366-b294-346625ad3d40.png)
+
 
 ## History 
 <details>
@@ -98,5 +99,5 @@ DataBase
  6. Access Token 추출 메서드
  7. Access Token 에서 원하는 클레임 추출 메서드 (username or password)
  8. 토큰의 유효성 검사 메서드
-- Refresh Token을 DB에 저장하기 위해 User 엔티티 클래스에 refreshToken 속성 추가 및 Refresh Token 업데이트 및 제거 메서드 
+- Refresh Token을 DB에 저장하기 위해 User 엔티티 클래스에 refreshToken 속성 추가 및 Refresh Token 업데이트 및 제거 로직 
  </details>
