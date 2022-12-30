@@ -39,6 +39,13 @@ public class SecurityConfig {
                     .antMatchers("/login", "/signUp","/").permitAll() // 로그인, 회원가입, 메인페이지는 인증 없이도 접근 허가
                     .anyRequest().authenticated();
 
+         /**
+          * 시큐리티에서 실행되는 필터의 순서가 존재하는데
+          * 기존 FormLogin 방식에서는 UsernamePasswordAuthenticationFilter에서 username과 password를 갖고 userpasswordAuthenticationToken 생성
+          * 그러나 JSON으로 데이터를 받아와 위 userpasswordAuthenticationToken를 생성하기 위해 JsonUsernamePasswordLoginFilter를 구현함
+          * 기존의 시큐리티 필터순서가 LogoutFilter 뒤에 UsernamePasswordAuthenticationFilter가 실행됨
+          * 그래서 JsonUsernamePasswordLoginFilter도 LogoutFilter 실행 후에 실행되도록 설정
+          * */
         http.addFilterAfter(jsonUsernamePasswordLoginFilter(), LogoutFilter.class);
 
 

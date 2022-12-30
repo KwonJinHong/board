@@ -1,0 +1,10 @@
+jwt:
+  secret: dlglffks!zmfmfm@gndnwnq32$^
+
+  access:
+    expiration: 80
+    header: Authorization
+
+  refresh:
+    expiration: 90
+    header: Authorization-refresh

@@ -40,13 +40,28 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(length = 1000)
+    private String refreshToken;//RefreshToken
+
     //== 패스워드 암호화 ==//
     public void encodePassword(PasswordEncoder passwordEncoder){
         this.password = passwordEncoder.encode(password);
     }
 
-    //== 회원탈퇴 -> 작성한 게시물, 댓글 모두 삭제 ==//
+    //==유저 정보 수정==//
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 
+    public void removeRefreshToken() {
+        this.refreshToken = null;
+    }
+
+
+
+
+
+    //== 회원탈퇴 -> 작성한 게시물, 댓글 모두 삭제 ==//
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();

@@ -13,6 +13,9 @@ spring:
 #        show_sql: true
         format_sql: true
 
+  profiles:
+    include: jwt
+
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
