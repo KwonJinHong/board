@@ -99,5 +99,6 @@ DataBase
  6. Access Token 추출 메서드
  7. Access Token 에서 원하는 클레임 추출 메서드 (username or password)
  8. 토큰의 유효성 검사 메서드
-- Refresh Token을 DB에 저장하기 위해 User 엔티티 클래스에 refreshToken 속성 추가 및 Refresh Token 업데이트 및 제거 로직 
+- Refresh Token을 DB에 저장하기 위해 User 엔티티 클래스에 refreshToken 속성 추가 및 Refresh Token 업데이트 및 제거 로직 추가
+ 
  </details>
