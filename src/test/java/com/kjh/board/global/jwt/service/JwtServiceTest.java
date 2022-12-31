@@ -214,6 +214,24 @@ class JwtServiceTest {
     }
 
     @Test
+    public void sendAccessToken_토큰_전송() throws Exception {
+        //given
+        MockHttpServletResponse mockHttpServletResponse = new MockHttpServletResponse();
+
+        String accessToken = jwtService.createAccessToken(username, password);
+
+        //when
+        jwtService.sendAccessToken(mockHttpServletResponse,accessToken);
+
+        //then
+        String headerAccessToken = mockHttpServletResponse.getHeader(accessHeader);
+
+        assertThat(headerAccessToken).isEqualTo(accessToken);
+
+
+    }
+
+    @Test
     public void AccessToken_추출() throws Exception {
         //given
         String accessToken = jwtService.createAccessToken(username, password);

@@ -1,6 +1,9 @@
 package com.kjh.board.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kjh.board.domain.user.repository.UserRepository;
+import com.kjh.board.domain.user.service.LoginService;
+import com.kjh.board.global.jwt.service.JwtService;
 import com.kjh.board.global.login.filter.JsonUsernamePasswordAuthenticationFilter;
 import com.kjh.board.global.login.handler.LoginFailureHandler;
 import com.kjh.board.global.login.handler.LoginSuccessJWTProvideHandler;
@@ -25,6 +28,9 @@ public class SecurityConfig {
 
     //private final LoginService loginService;
     private final ObjectMapper objectMapper;
+    private final UserRepository userRepository;
+    private final JwtService jwtService;
+    private final LoginService loginService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -59,14 +65,15 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager() {//2 - AuthenticationManager 등록
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();//DaoAuthenticationProvider 사용
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());//PasswordEncoder로는 PasswordEncoderFactories.createDelegatingPasswordEncoder() 사용
+        provider.setUserDetailsService(loginService);
         return new ProviderManager(provider);
     }
 
     @Bean
     public LoginSuccessJWTProvideHandler loginSuccessJWTProvideHandler(){
-        return new LoginSuccessJWTProvideHandler();
+        return new LoginSuccessJWTProvideHandler(userRepository, jwtService);
     }
 
     @Bean
