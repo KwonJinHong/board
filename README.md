@@ -105,5 +105,6 @@ DataBase
  - 로그인 성공 시 JWT를 발급하는 코드 작성
  - 로그인 성공 시에 LoginSuccessJWTProvideHandler의 onAuthenticationSuccess() 메서드에서 JWT 발급을 처리한다.
  - Access Token과 Refresh Token을 발급하고, Refresh Token은 발급한 이후 회원에게 저장해준다.
+ - LoginSuccessJWTProvideHandlerTest에서 로그인 성공 시에 JWT 발급을 확인하는 테스트도 완료했다.
  
  </details>
