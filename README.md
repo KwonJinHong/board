@@ -107,4 +107,10 @@ DataBase
  - Access Token과 Refresh Token을 발급하고, Refresh Token은 발급한 이후 회원에게 저장해준다.
  - LoginSuccessJWTProvideHandlerTest에서 로그인 성공 시에 JWT 발급을 확인하는 테스트도 완료했다.
  
+ 2023-1-1 일 Happy New Year!:congratulations:
+ - JWT을 통한 인증을 위한 JwtAuthenticationProcessingFilter 구현
+ - "/login"을 제외한 들어오는 모든 요청에 대해서 작동하도록 필터 구현
+ - 간략히 적기에는 내용들이 많아서 조만간 로그인 & JWT 통한 인증에 대한 개념 및 내용을 md 파일로 정리하여 올릴 예정
+ - Access Token 및 Refresh Token 의 존재 유무, 유효 유무(?)에 대한 테스트 케이스 정리해서 테스트 
+ 
  </details>
