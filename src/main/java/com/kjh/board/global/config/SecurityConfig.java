@@ -5,6 +5,7 @@ import com.kjh.board.domain.user.repository.UserRepository;
 import com.kjh.board.domain.user.service.LoginService;
 import com.kjh.board.global.jwt.service.JwtService;
 import com.kjh.board.global.login.filter.JsonUsernamePasswordAuthenticationFilter;
+import com.kjh.board.global.jwt.filter.JwtAuthenticationProcessingFilter;
 import com.kjh.board.global.login.handler.LoginFailureHandler;
 import com.kjh.board.global.login.handler.LoginSuccessJWTProvideHandler;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +27,11 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    //private final LoginService loginService;
+    private final LoginService loginService;
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
     private final JwtService jwtService;
-    private final LoginService loginService;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -53,7 +54,7 @@ public class SecurityConfig {
           * 그래서 JsonUsernamePasswordLoginFilter도 LogoutFilter 실행 후에 실행되도록 설정
           * */
         http.addFilterAfter(jsonUsernamePasswordLoginFilter(), LogoutFilter.class);
-
+        http.addFilterBefore(jwtAuthenticationProcessingFilter(), JsonUsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -87,6 +88,13 @@ public class SecurityConfig {
         jsonUsernamePasswordLoginFilter.setAuthenticationManager(authenticationManager());
         jsonUsernamePasswordLoginFilter.setAuthenticationSuccessHandler(loginSuccessJWTProvideHandler());
         jsonUsernamePasswordLoginFilter.setAuthenticationFailureHandler(loginFailureHandler());
+
+        return jsonUsernamePasswordLoginFilter;
+    }
+
+    @Bean
+    public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter(){
+        JwtAuthenticationProcessingFilter jsonUsernamePasswordLoginFilter = new JwtAuthenticationProcessingFilter(userRepository, jwtService);
 
         return jsonUsernamePasswordLoginFilter;
     }
