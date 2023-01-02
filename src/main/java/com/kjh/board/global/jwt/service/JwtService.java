@@ -43,7 +43,7 @@ public class JwtService {
     private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
     private static final String REFRESH_TOKEN_SUBJECT = "RefreshToken";
     private static final String USERNAME_CLAIM = "username";
-    private static final String PASSWORD_CLAIM = "password";
+
     private static final String BEARER = "Bearer ";
 
     private final UserRepository userRepository;
@@ -53,12 +53,11 @@ public class JwtService {
      * Access Token 생성 메서드
      * username과 password를 비공개 클레임으로 사용
      * */
-    public String createAccessToken(String username, String password) {
+    public String createAccessToken(String username) {
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
                 .withExpiresAt(new Date(System.currentTimeMillis() + accessTokenValidityInSeconds * 1000))
                 .withClaim(USERNAME_CLAIM, username)
-                .withClaim(PASSWORD_CLAIM, password)
                 .sign(Algorithm.HMAC512(secret));
     }
 
@@ -157,21 +156,6 @@ public class JwtService {
                         .verify(accessToken) // Access Token을 검증하고, 유효하지 않으면 예외를 발생시킴
                         .getClaim(USERNAME_CLAIM) // 해당 클레임을 가져옴
                         .asString());
-        } catch (Exception e) {
-            return Optional.empty();
-        }
-    }
-
-    /**
-     * Access Token으로부터 password를 추출
-     * */
-    public Optional<String> extractPassword(String accessToken) {
-        try {
-            return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secret))
-                    .build()
-                    .verify(accessToken)
-                    .getClaim(PASSWORD_CLAIM)
-                    .asString());
         } catch (Exception e) {
             return Optional.empty();
         }

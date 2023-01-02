@@ -78,7 +78,7 @@ class JwtServiceTest {
     @Test
     public void AccessToken_발급_테스트() throws Exception {
         //given, when
-        String accessToken = jwtService.createAccessToken(username, password);
+        String accessToken = jwtService.createAccessToken(username);
 
         DecodedJWT verify = getVerify(accessToken);
 
@@ -148,7 +148,7 @@ class JwtServiceTest {
     @Test
     public void 토큰_유효성_검사() throws Exception {
         //given
-        String accessToken = jwtService.createAccessToken(username, password);
+        String accessToken = jwtService.createAccessToken(username);
         String refreshToken = jwtService.createRefreshToken();
 
         //when, then
@@ -160,7 +160,7 @@ class JwtServiceTest {
     public void AccessToken_헤더_설정() throws Exception {
         MockHttpServletResponse mockHttpServletResponse = new MockHttpServletResponse();
 
-        String accessToken = jwtService.createAccessToken(username, password);
+        String accessToken = jwtService.createAccessToken(username);
         String refreshToken = jwtService.createRefreshToken();
 
         jwtService.setAccessTokenHeader(mockHttpServletResponse, accessToken);
@@ -179,7 +179,7 @@ class JwtServiceTest {
     public void RefreshToken_헤더_설정() throws Exception {
         MockHttpServletResponse mockHttpServletResponse = new MockHttpServletResponse();
 
-        String accessToken = jwtService.createAccessToken(username, password);
+        String accessToken = jwtService.createAccessToken(username);
         String refreshToken = jwtService.createRefreshToken();
 
         jwtService.setRefreshTokenHeader(mockHttpServletResponse, refreshToken);
@@ -198,7 +198,7 @@ class JwtServiceTest {
         //given
         MockHttpServletResponse mockHttpServletResponse = new MockHttpServletResponse();
 
-        String accessToken = jwtService.createAccessToken(username, password);
+        String accessToken = jwtService.createAccessToken(username);
         String refreshToken = jwtService.createRefreshToken();
 
         //when
@@ -218,7 +218,7 @@ class JwtServiceTest {
         //given
         MockHttpServletResponse mockHttpServletResponse = new MockHttpServletResponse();
 
-        String accessToken = jwtService.createAccessToken(username, password);
+        String accessToken = jwtService.createAccessToken(username);
 
         //when
         jwtService.sendAccessToken(mockHttpServletResponse,accessToken);
@@ -234,7 +234,7 @@ class JwtServiceTest {
     @Test
     public void AccessToken_추출() throws Exception {
         //given
-        String accessToken = jwtService.createAccessToken(username, password);
+        String accessToken = jwtService.createAccessToken(username);
         String refreshToken = jwtService.createRefreshToken();
         HttpServletRequest httpServletRequest = setRequest(accessToken, refreshToken);
 
@@ -267,7 +267,7 @@ class JwtServiceTest {
     @Test
     public void Username_추출() throws Exception {
         //given
-        String accessToken = jwtService.createAccessToken(username, password);
+        String accessToken = jwtService.createAccessToken(username);
         String refreshToken = jwtService.createRefreshToken();
         HttpServletRequest httpServletRequest = setRequest(accessToken, refreshToken);
 
@@ -281,20 +281,5 @@ class JwtServiceTest {
         assertThat(extractUsername).isEqualTo(username);
     }
 
-    @Test
-    public void Password_추출() throws Exception {
-        //given
-        String accessToken = jwtService.createAccessToken(username, password);
-        String refreshToken = jwtService.createRefreshToken();
-        HttpServletRequest httpServletRequest = setRequest(accessToken, refreshToken);
 
-        String requestAccessToken = jwtService.extractAccessToken(httpServletRequest).orElseThrow(()->new Exception("토큰이 없습니다"));
-
-        //when
-        String extractPassword = jwtService.extractPassword(requestAccessToken).orElseThrow(()->new Exception("토큰이 없습니다"));
-
-
-        //then
-        assertThat(extractPassword).isEqualTo(password);
-    }
 }

@@ -61,7 +61,6 @@ class LoginSuccessJWTProvideHandlerTest {
     private String refreshHeader;
 
     private static String KEY_USERNAME = "username";
-    private static String KEY_PASSWORD = "password";
     private static String USERNAME = "kjh";
     private static String PASSWORD = "73013815";
 
@@ -95,7 +94,6 @@ class LoginSuccessJWTProvideHandlerTest {
     private Map getUsernamePasswordMap(String username, String password){
         Map<String, String> map = new HashMap<>();
         map.put(KEY_USERNAME, username);
-        map.put(KEY_PASSWORD, password);
         return map;
     }
 
