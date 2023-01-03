@@ -117,4 +117,9 @@ DataBase
  - JWT의 payload 부분에 담기는 유저 정보 중 password 항목을 제거했다. JWT는 누구나 까서 볼 수 있다는 점을 간과했다. 중요한 정보는 담지 말아야하는데 유저의 비밀번호를 집어넣은 것은 나의 큰 불찰이었다. 미리 이렇게 수정할 수 있어서 다행이라는 생각이들었다.
  - 로그인을 구현했던 내용을 정리하여 만들었다. [로그인_구현기](https://github.com/KwonJinHong/Springboot/blob/master/Board%EA%B5%AC%ED%98%84%EA%B8%B0/%EB%A1%9C%EA%B7%B8%EC%9D%B8_%EA%B5%AC%ED%98%84.md)
  
+ 2023-1-3 화
+ - 로그인 기능 구현 후 기존의 UserService의 회원가입 메서드를 수정하였다.
+ - UserService에 회원가입, 탈퇴, 회정정보 수정(닉네임, 이메일, 전화번호), 비밀번호 변경, 회원 정보 조회, 내정보조회 메서드를 구현하였다.
+ - DTO를 기존에 Request, Response로 나눴었는데, 좀 더 세분화해서 써야 할 필요성을 느꼈다. 각 메서드 별로 필요한 속성들이 다르기 때문에 메서드 별 DTO를 만드는 걸 생각중이다.
+ 
  </details>
