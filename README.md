@@ -122,5 +122,6 @@ DataBase
  - UserService에 회원가입, 탈퇴, 회정정보 수정(닉네임, 이메일, 전화번호), 비밀번호 변경, 회원 정보 조회, 내정보조회 메서드를 구현하였다.
  - DTO를 기존에 Request, Response로 나눴었는데, 좀 더 세분화해서 써야 할 필요성을 느꼈다. 각 메서드 별로 필요한 속성들이 다르기 때문에 메서드 별 DTO를 만드는 걸 생각중이다.
  - UserServiceTest에 각 메서드 별 기능 테스트 완료
+ - [JWT 관련 내용정리](https://github.com/KwonJinHong/Springboot/blob/master/Board%EA%B5%AC%ED%98%84%EA%B8%B0/JWT_%EA%B4%80%EB%A0%A8_%EA%B5%AC%ED%98%84%EA%B8%B0.md)
  
  </details>
