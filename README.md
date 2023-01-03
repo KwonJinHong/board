@@ -113,4 +113,8 @@ DataBase
  - 간략히 적기에는 내용들이 많아서 조만간 로그인 & JWT 통한 인증에 대한 개념 및 내용을 md 파일로 정리하여 올릴 예정
  - Access Token 및 Refresh Token 의 존재 유무, 유효 유무(?)에 대한 테스트 케이스 정리해서 테스트 
  
+ 2023-1-2 월
+ - JWT의 payload 부분에 담기는 유저 정보 중 password 항목을 제거했다. JWT는 누구나 까서 볼 수 있다는 점을 간과했다. 중요한 정보는 담지 말아야하는데 유저의 비밀번호를 집어넣은 것은 나의 큰 불찰이었다. 미리 이렇게 수정할 수 있어서 다행이라는 생각이들었다.
+ - 로그인을 구현했던 내용을 정리하여 만들었다. [로그인_구현기](https://github.com/KwonJinHong/Springboot/blob/master/Board%EA%B5%AC%ED%98%84%EA%B8%B0/%EB%A1%9C%EA%B7%B8%EC%9D%B8_%EA%B5%AC%ED%98%84.md)
+ 
  </details>
