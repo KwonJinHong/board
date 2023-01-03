@@ -6,7 +6,10 @@ import org.springframework.http.HttpStatus;
 public enum UserExceptionType implements BaseExceptionType {
     //== 회원가입, 회원 조회 시 ==//
     ALREADY_EXIST_USERNAME(600, HttpStatus.CONFLICT, "이미 존재하는 아이디입니다."),
-    NOT_FOUND_USER(602, HttpStatus.NOT_FOUND, "회원 정보가 없습니다.");
+    NOT_FOUND_USER(601, HttpStatus.NOT_FOUND, "회원 정보가 없습니다."),
+
+    WRONG_PASSWORD(602, HttpStatus.BAD_REQUEST, "비밀번호가 틀립니다.");
+
 
 
     private int errorCode;

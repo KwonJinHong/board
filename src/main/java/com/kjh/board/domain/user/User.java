@@ -43,12 +43,31 @@ public class User extends BaseTimeEntity {
     @Column(length = 1000)
     private String refreshToken;//RefreshToken
 
+    //== 회원탈퇴 -> 작성한 게시물, 댓글 모두 삭제 ==//
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
     //== 패스워드 암호화 ==//
     public void encodePassword(PasswordEncoder passwordEncoder){
         this.password = passwordEncoder.encode(password);
     }
 
     //==유저 정보 수정==//
+    public void updatePassword(PasswordEncoder passwordEncoder, String password){
+        this.password = passwordEncoder.encode(password);
+    }
+
+    public void update(String nickname, String email, String phonenumber) {
+        this.nickname = nickname;
+        this.email = email;
+        this.phonenumber = phonenumber;
+    }
+
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
@@ -58,17 +77,6 @@ public class User extends BaseTimeEntity {
     }
 
 
-
-
-
-    //== 회원탈퇴 -> 작성한 게시물, 댓글 모두 삭제 ==//
-    @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
-    private List<Post> posts = new ArrayList<>();
-
-    @Builder.Default
-    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
 
     //== 연관관계 메서드 ==//
     public void addPost(Post post){
@@ -81,5 +89,14 @@ public class User extends BaseTimeEntity {
         comments.add(comment);
     }
 
+    //비밀번호 변경이나 탈퇴시 비밀번호 일치여부 확인 메서드
+    public boolean isMatchPassword(PasswordEncoder passwordEncoder, String password) {
+        return passwordEncoder.matches(password, getPassword());
+    }
+
+    //회원 가입시 권한 부여
+    public void addUserAuthority() {
+        this.role = Role.USER;
+    }
 
 }

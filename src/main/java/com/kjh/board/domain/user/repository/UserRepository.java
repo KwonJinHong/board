@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * Refresh Token을 통해 유저 정보 조회
      * */
     Optional<User> findByRefreshToken(String refreshToken);
+
+    boolean existsByUsername(String username);
 }

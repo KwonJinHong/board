@@ -20,6 +20,7 @@ public class UserDto {
 
         private Long id;
         private String username;
+        private String password;
         private String nickname;
         private String phonenumber;
         private String email;
@@ -29,6 +30,7 @@ public class UserDto {
             User user = User.builder()
                     .id(id)
                     .username(username)
+                    .password(password)
                     .nickname(nickname)
                     .phonenumber(phonenumber)
                     .email(email)
@@ -56,6 +58,8 @@ public class UserDto {
             this.email = user.getEmail();
         }
     }
+
+
 
 
 }
