@@ -51,7 +51,7 @@ public class JwtService {
 
     /**
      * Access Token 생성 메서드
-     * username과 password를 비공개 클레임으로 사용
+     * username을 클레임을 사용
      * */
     public String createAccessToken(String username) {
         return JWT.create()

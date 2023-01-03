@@ -1,13 +1,14 @@
 package com.kjh.board.service;
 
 import com.kjh.board.domain.user.Role;
+import com.kjh.board.domain.user.dto.UserInfoDto;
+import com.kjh.board.domain.user.dto.UserJoinDto;
+import com.kjh.board.domain.user.dto.UserUpdateDto;
 import com.kjh.board.domain.user.exception.UserException;
 import com.kjh.board.domain.user.exception.UserExceptionType;
 import com.kjh.board.domain.user.service.UserService;
-import com.kjh.board.domain.user.dto.UserDto;
 import com.kjh.board.domain.user.repository.UserRepository;
 import com.kjh.board.global.util.security.SecurityUtil;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -44,20 +47,12 @@ class UserServiceTest {
         em.clear();
     }
 
-    private UserDto.Request makeUserDto() {
-        UserDto.Request userDto = UserDto.Request.builder()
-                .username("kjh")
-                .nickname("이히")
-                .password(PASSWORD)
-                .phonenumber("01090765644")
-                .email("zmfmfm@dlgl.com")
-                .build();
-
-        return userDto;
+    private UserJoinDto makeUserDto() {
+        return new UserJoinDto("kjh",PASSWORD,"zmfmfm","zmfmfm@dlgl.com", "01099995555");
     }
 
-    private UserDto.Request setUser() throws Exception {
-        UserDto.Request userJoinDto = makeUserDto();
+    private UserJoinDto setUser() throws Exception {
+        UserJoinDto userJoinDto = makeUserDto();
         userService.join(userJoinDto);
         clear();
         SecurityContext emptyContext = SecurityContextHolder.createEmptyContext();
@@ -86,7 +81,7 @@ class UserServiceTest {
     @Test
     public void 회원가입() throws Exception {
         //given
-        UserDto.Request userJoinDto = makeUserDto();
+        UserJoinDto userJoinDto = makeUserDto();
 
         //when
         userService.join(userJoinDto);
@@ -108,7 +103,7 @@ class UserServiceTest {
     @Test
     public void 회원가입_실패_원인_아이디중복() throws Exception {
         //given
-        UserDto.Request userJoinDto = makeUserDto();
+        UserJoinDto userJoinDto = makeUserDto();
         userService.join(userJoinDto);
         clear();
 
@@ -128,7 +123,7 @@ class UserServiceTest {
     @Test
     public void 회원수정_비밀번호수정_성공() throws Exception {
         //given
-        UserDto.Request userJoinDto = setUser();
+        UserJoinDto userJoinDto = setUser();
 
         //when
         String changePassword = "##456123!!";
@@ -145,18 +140,16 @@ class UserServiceTest {
     @Test
     public void 회원정보수정_3개다() throws Exception {
         //given
-        UserDto.Request userJoinDto = setUser();
+        UserJoinDto userJoinDto = setUser();
 
         //when
         String changeNickname = "히히";
         String changeEmail = "change@change";
         String chanegPhoneNumber = "01099999999";
 
-        userJoinDto.setNickname(changeNickname);
-        userJoinDto.setEmail(changeEmail);
-        userJoinDto.setPhonenumber(chanegPhoneNumber);
+        UserUpdateDto userUpdateDto = new UserUpdateDto(Optional.of(changeNickname), Optional.of(changeEmail), Optional.of(chanegPhoneNumber));
 
-        userService.update(userJoinDto.getUsername(), userJoinDto);
+        userService.update(userJoinDto.getUsername(), userUpdateDto);
         clear();
 
         //then
@@ -171,14 +164,14 @@ class UserServiceTest {
     @Test
     public void 회원정보수정_닉네임만() throws Exception {
         //given
-        UserDto.Request userJoinDto = setUser();
+        UserJoinDto userJoinDto = setUser();
 
         //when
         String changeNickname = "히히";
 
-        userJoinDto.setNickname(changeNickname);
+        UserUpdateDto userUpdateDto = new UserUpdateDto(Optional.of(changeNickname), Optional.empty(), Optional.empty());
 
-        userService.update(userJoinDto.getUsername(), userJoinDto);
+        userService.update(userJoinDto.getUsername(), userUpdateDto);
         clear();
 
         //then
@@ -186,22 +179,23 @@ class UserServiceTest {
                 new UserException(UserExceptionType.NOT_FOUND_USER));
 
         assertThat(user.getNickname()).isEqualTo(changeNickname);
+        assertThat(user.getEmail()).isEqualTo(userJoinDto.getEmail());
+        assertThat(user.getPhonenumber()).isEqualTo(userJoinDto.getPhonenumber());
 
     }
 
     @Test
     public void 회원정보수정_닉네임과이메일만() throws Exception {
         //given
-        UserDto.Request userJoinDto = setUser();
+        UserJoinDto userJoinDto = setUser();
 
         //when
         String changeNickname = "히히";
         String changeEmail = "change@change";
 
-        userJoinDto.setNickname(changeNickname);
-        userJoinDto.setEmail(changeEmail);
+        UserUpdateDto userUpdateDto = new UserUpdateDto(Optional.of(changeNickname), Optional.of(changeEmail), Optional.empty());
 
-        userService.update(userJoinDto.getUsername(), userJoinDto);
+        userService.update(userJoinDto.getUsername(), userUpdateDto);
         clear();
 
         //then
@@ -210,6 +204,7 @@ class UserServiceTest {
 
         assertThat(user.getNickname()).isEqualTo(changeNickname);
         assertThat(user.getEmail()).isEqualTo(changeEmail);
+        assertThat(user.getPhonenumber()).isEqualTo(userJoinDto.getPhonenumber());
     }
 
 
@@ -221,7 +216,7 @@ class UserServiceTest {
     @Test
     public void 회원탈퇴() throws Exception {
         //given
-        UserDto.Request userJoinDto = setUser();
+        UserJoinDto userJoinDto = setUser();
 
         //when
         userService.quit(userJoinDto.getUsername(),PASSWORD);
@@ -235,7 +230,7 @@ class UserServiceTest {
     @Test
     public void 회원탈퇴_비밀번호틀림() throws Exception {
         //given
-        UserDto.Request userJoinDto = setUser();
+        UserJoinDto userJoinDto = setUser();
 
         //when, then
         assertThat(assertThrows(UserException.class ,() -> userService.quit(userJoinDto.getUsername(),PASSWORD+"키히히")).getExceptionType())
@@ -246,13 +241,13 @@ class UserServiceTest {
     @Test
     public void 회원정보조회() throws Exception {
         //given
-        UserDto.Request userJoinDto = setUser();
+        UserJoinDto userJoinDto = setUser();
         com.kjh.board.domain.user.User user = userRepository.findByUsername(userJoinDto.getUsername()).orElseThrow(()->
                 new UserException(UserExceptionType.NOT_FOUND_USER));
         clear();
 
         //when
-        UserDto.Response userInfo = userService.getInfo(user.getId());
+        UserInfoDto userInfo = userService.getInfo(user.getId());
         
         //then
         assertThat(userInfo.getUsername()).isEqualTo(userJoinDto.getUsername());
@@ -265,10 +260,10 @@ class UserServiceTest {
     @Test
     public void 내정보조회() throws Exception {
         //given
-        UserDto.Request userJoinDto = setUser();
+        UserJoinDto userJoinDto = setUser();
 
         //when
-        UserDto.Response myInfo = userService.getMyInfo();
+        UserInfoDto myInfo = userService.getMyInfo();
 
         //then
         assertThat(myInfo.getUsername()).isEqualTo(userJoinDto.getUsername());
