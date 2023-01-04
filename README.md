@@ -123,5 +123,6 @@ DataBase
  - DTO를 기존에 Request, Response로 나눴었는데, 좀 더 세분화해서 써야 할 필요성을 느꼈다. 각 메서드 별로 필요한 속성들이 다르기 때문에 메서드 별 DTO를 만드는 걸 생각중이다.
  - UserServiceTest에 각 메서드 별 기능 테스트 완료
  - [JWT 관련 내용정리](https://github.com/KwonJinHong/Springboot/blob/master/Board%EA%B5%AC%ED%98%84%EA%B8%B0/JWT_%EA%B4%80%EB%A0%A8_%EA%B5%AC%ED%98%84%EA%B8%B0.md)
+ - UserDto가 기존의 Request와 Response로 구분되어 있긴 했지만, 기존 UserDTO를 삭제하고 좀 더 메서드 용도에 맞는 DTO들로 세분화 (UserJoinDto, UserInfoDto, UserUpdateDto)
  
  </details>
