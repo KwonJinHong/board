@@ -21,9 +21,10 @@ import static javax.persistence.CascadeType.ALL;
 public class User extends BaseTimeEntity {
 
     @Id @GeneratedValue
+    @Column(name = "user_id")
     private Long id;
 
-    @Column(length = 15, nullable = false, unique = true)
+    @Column(length = 20, nullable = false, unique = true)
     private String username; // 사용자 ID, 추후에 password도 추가해서 로그인 기능 구현 예정
 
     private String password;//비밀번호
@@ -31,7 +32,7 @@ public class User extends BaseTimeEntity {
     @Column(length = 30, nullable = false, unique = true)
     private String nickname; // 사용자가 정하는 닉네임
 
-    @Column(length = 11, nullable = false, unique = true)
+    @Column(length = 13, nullable = false, unique = true)
     private String phonenumber; // 사용자 이메일
 
     @Column(length = 50, nullable = false, unique = true)
@@ -96,8 +97,8 @@ public class User extends BaseTimeEntity {
     }
 
     //비밀번호 변경이나 탈퇴시 비밀번호 일치여부 확인 메서드
-    public boolean isMatchPassword(PasswordEncoder passwordEncoder, String password) {
-        return passwordEncoder.matches(password, getPassword());
+    public boolean isMatchPassword(PasswordEncoder passwordEncoder, String checkingPassword) {
+        return passwordEncoder.matches(checkingPassword, getPassword());
     }
 
     //회원 가입시 권한 부여

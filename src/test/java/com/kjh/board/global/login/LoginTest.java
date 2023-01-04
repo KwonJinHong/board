@@ -52,7 +52,7 @@ public class LoginTest {
     private static String KEY_USERNAME = "username";
     private static String KEY_PASSWORD = "password";
     private static String USERNAME = "kjh";
-    private static String PASSWORD = "1q2w3e4r";
+    private static String PASSWORD = "1q2w3e4r!!";
 
     private static String LOGIN_RUL = "/login";
 
@@ -69,8 +69,8 @@ public class LoginTest {
                 .password(delegatingPasswordEncoder.encode(PASSWORD))
                 .nickname("Member1")
                 .role(Role.USER)
-                .email("zmfmfm@zmfmfmf")
-                .phonenumber("01090765644")
+                .email("zmfmfm@zmfmfmf.com")
+                .phonenumber("010-1111-2222")
                 .build());
         clear();
     }

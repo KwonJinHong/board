@@ -48,7 +48,7 @@ class UserServiceTest {
     }
 
     private UserJoinDto makeUserDto() {
-        return new UserJoinDto("kjh",PASSWORD,"zmfmfm","zmfmfm@dlgl.com", "01099995555");
+        return new UserJoinDto("kjh",PASSWORD,"zmfmfm","zmfmfm@dlgl.com", "010-9999-5555");
     }
 
     private UserJoinDto setUser() throws Exception {
@@ -210,16 +210,17 @@ class UserServiceTest {
 
     /**
      * 회원탈퇴
-     * 비밀번호를 입력받아서 일치하면 탈퇴 가능
      */
 
     @Test
     public void 회원탈퇴() throws Exception {
         //given
         UserJoinDto userJoinDto = setUser();
+        com.kjh.board.domain.user.User user = userRepository.findByUsername(userJoinDto.getUsername()).orElseThrow(()->
+                new UserException(UserExceptionType.NOT_FOUND_USER));
 
         //when
-        userService.quit(userJoinDto.getUsername(),PASSWORD);
+        userService.quit(user.getId());
 
         //then
         assertThat(assertThrows(UserException.class, ()-> userRepository.findByUsername(userJoinDto.getUsername()).orElseThrow(() ->
@@ -227,16 +228,7 @@ class UserServiceTest {
 
     }
 
-    @Test
-    public void 회원탈퇴_비밀번호틀림() throws Exception {
-        //given
-        UserJoinDto userJoinDto = setUser();
 
-        //when, then
-        assertThat(assertThrows(UserException.class ,() -> userService.quit(userJoinDto.getUsername(),PASSWORD+"키히히")).getExceptionType())
-                .isEqualTo(UserExceptionType.WRONG_PASSWORD);
-        
-    }
     
     @Test
     public void 회원정보조회() throws Exception {

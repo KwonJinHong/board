@@ -3,6 +3,7 @@ package com.kjh.board.domain.user.service;
 import com.kjh.board.domain.user.User;
 import com.kjh.board.domain.user.dto.UserInfoDto;
 import com.kjh.board.domain.user.dto.UserJoinDto;
+import com.kjh.board.domain.user.dto.UserQuitDto;
 import com.kjh.board.domain.user.dto.UserUpdateDto;
 import com.kjh.board.domain.user.exception.UserException;
 import com.kjh.board.domain.user.exception.UserExceptionType;
@@ -67,6 +68,7 @@ public class UserService {
      * 유저 정보 업데이트
      * dirty-checking 방식
      * */
+    @Transactional
     public void update(String username, UserUpdateDto userUpdateDto) {
         User user = userRepository.findByUsername(username).orElseThrow(()->
                 new UserException(UserExceptionType.NOT_FOUND_USER));
@@ -81,7 +83,8 @@ public class UserService {
      * 유저의 비밀번호 변경
      * dirty-checking 방식
      * */
-    public void updatePassword(String username, String checkingPassword, String changePassword) throws Exception {
+    @Transactional
+    public void updatePassword(String username, String checkingPassword, String changePassword) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new UserException(UserExceptionType.NOT_FOUND_USER));
 
@@ -97,13 +100,10 @@ public class UserService {
      * 회원 탈퇴
      * 탈퇴 시 비밀번호 필요!
      * */
-    public void quit(String username, String checkingPassword) {
-        User user = userRepository.findByUsername(username).orElseThrow(() ->
+    @Transactional
+    public void quit(Long id) throws Exception {
+        User user = userRepository.findById(id).orElseThrow(() ->
                 new UserException(UserExceptionType.NOT_FOUND_USER));
-
-        if (!user.isMatchPassword(passwordEncoder, checkingPassword)) {
-            throw new UserException(UserExceptionType.WRONG_PASSWORD);
-        }
 
         userRepository.delete(user);
     }

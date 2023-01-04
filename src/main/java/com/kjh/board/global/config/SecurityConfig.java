@@ -43,7 +43,7 @@ public class SecurityConfig {
 
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/login", "/signUp","/").permitAll() // 로그인, 회원가입, 메인페이지는 인증 없이도 접근 허가
+                    .antMatchers("/login", "/join","/").permitAll() // 로그인, 회원가입, 메인페이지는 인증 없이도 접근 허가
                     .anyRequest().authenticated();
 
          /**

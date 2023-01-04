@@ -60,7 +60,7 @@ class JwtAuthenticationProcessingFilterTest {
     private static String KEY_USERNAME = "username";
     private static String KEY_PASSWORD = "password";
     private static String USERNAME = "kjh";
-    private static String PASSWORD = "73013815";
+    private static String PASSWORD = "aaabbbccc12##";
 
     private static String LOGIN_RUL = "/login";
 
@@ -83,8 +83,8 @@ class JwtAuthenticationProcessingFilterTest {
                 .password(delegatingPasswordEncoder.encode(PASSWORD))
                 .nickname("Member1")
                 .role(Role.USER)
-                .email("zmfmfm@zmfmfmf")
-                .phonenumber("12312341234")
+                .email("zmfmfm@zmfmfmf.com")
+                .phonenumber("000-123-5555")
                 .build());
         clear();
     }
