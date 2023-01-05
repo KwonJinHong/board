@@ -1,18 +1,19 @@
 package com.kjh.board.domain.post.service;
 
 import com.kjh.board.domain.post.Post;
+import com.kjh.board.domain.post.dto.PostInfoDto;
+import com.kjh.board.domain.post.dto.PostSaveDto;
+import com.kjh.board.domain.post.dto.PostUpdateDto;
 import com.kjh.board.domain.post.exception.PostException;
 import com.kjh.board.domain.post.exception.PostExceptionType;
-import com.kjh.board.domain.user.User;
-import com.kjh.board.domain.post.dto.PostDto;
 import com.kjh.board.domain.post.repository.PostRepository;
+import com.kjh.board.domain.user.exception.UserException;
+import com.kjh.board.domain.user.exception.UserExceptionType;
 import com.kjh.board.domain.user.repository.UserRepository;
+import com.kjh.board.global.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,36 +28,27 @@ public class PostService {
      * Create - 게시물 저장
      * */
     @Transactional
-    public Long save(PostDto.Request postDto, String nickname) {
-        //닉네임으로 유저 정보 가져와 postDto에 넘겨준다.
-        User user = userRepository.findByNickname(nickname);
-        postDto.setUser(user);
+    public void save(PostSaveDto postSaveDto) {
 
-        Post post = postDto.toEntity();
-        postRepository.save(post);
+      Post post = postSaveDto.toEntity();
 
-        return post.getId();
+      post.confirmWriter(userRepository.findByUsername(SecurityUtil.getLoginUsername())
+              .orElseThrow(()-> new UserException(UserExceptionType.NOT_FOUND_USER)));
+
+      postRepository.save(post);
+
     }
 
-    /**
-     * Read - 게시글 리스트 조회
-     * 전체조회
-     * */
-    public List<PostDto.Response> findAll() {
-        List<Post> post = postRepository.findAll();
-        //Entity -> DTO로 변환
-        return post.stream().map(PostDto.Response::new).collect(Collectors.toList());
-    }
 
     /**
      * Read - 게시글 리스트 조회
      * 단건 조회
      * */
-    public PostDto.Response findById(Long id) {
+    public PostInfoDto getPostInfo(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new PostException(PostExceptionType.POST_NOT_FOUND));
 
-        return new PostDto.Response(post);
+        return new PostInfoDto(post);
     }
 
     /**
@@ -64,11 +56,14 @@ public class PostService {
      * 병합(merge)방식이 아닌 Dirty Checking 방식 사용
      * */
     @Transactional
-    public void update(Long id, PostDto.Request postDto) {
+    public void update(Long id, PostUpdateDto postUpdateDto) {
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new PostException(PostExceptionType.POST_NOT_FOUND));
 
-        post.update(postDto.getTitle(), postDto.getContent());
+        checkAuthority(post,PostExceptionType.NOT_AUTHORITY_UPDATE_POST );
+
+        postUpdateDto.getTitle().ifPresent(post::updateTitle);
+        postUpdateDto.getContent().ifPresent(post::updateContent);
     }
 
     /**
@@ -79,6 +74,15 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new PostException(PostExceptionType.POST_NOT_FOUND));
 
+        checkAuthority(post,PostExceptionType.NOT_AUTHORITY_DELETE_POST );
+
         postRepository.delete(post);
+    }
+
+
+    //게시글에 대한 수정, 삭제 권한을 검사함
+    private void checkAuthority(Post post, PostExceptionType postExceptionType) {
+        if(!post.getUser().getUsername().equals(SecurityUtil.getLoginUsername()))
+            throw new PostException(postExceptionType);
     }
 }

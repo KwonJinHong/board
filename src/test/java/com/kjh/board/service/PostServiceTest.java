@@ -2,23 +2,36 @@ package com.kjh.board.service;
 
 import com.kjh.board.domain.comment.service.CommentService;
 import com.kjh.board.domain.post.Post;
+import com.kjh.board.domain.post.dto.PostInfoDto;
+import com.kjh.board.domain.post.dto.PostSaveDto;
+import com.kjh.board.domain.post.dto.PostUpdateDto;
 import com.kjh.board.domain.post.exception.PostException;
+import com.kjh.board.domain.post.exception.PostExceptionType;
 import com.kjh.board.domain.post.service.PostService;
-import com.kjh.board.domain.user.User;
-import com.kjh.board.domain.comment.dto.CommentDto;
-import com.kjh.board.domain.post.dto.PostDto;
 import com.kjh.board.domain.post.repository.PostRepository;
+import com.kjh.board.domain.user.Role;
+import com.kjh.board.domain.user.dto.UserJoinDto;
 import com.kjh.board.domain.user.repository.UserRepository;
+import com.kjh.board.domain.user.service.UserService;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import java.util.List;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -32,178 +45,207 @@ class PostServiceTest {
     @Autowired
     CommentService commentService;
 
+    @Autowired
+    UserService userService;
+
     PostException postException;
 
     @Autowired UserRepository userRepository;
     @PersistenceContext EntityManager em;
 
+    private static final String USERNAME = "kjh1234";
+    private static final String PASSWORD = "1q2w3e4r!!";
 
 
-    @Test
-    public void 게시글_저장() throws Exception {
-        //given
-        User user = User.builder().username("kjh").nickname("dd").phonenumber("01090765644").email("dlgl@zmfmfm.gnw").build();
-        userRepository.save(user);
-
-        PostDto.Request postDto = PostDto.Request.builder()
-                .title("이히1")
-                .user(user)
-                .content("오홍")
-                .build();
-
-        //when
-        postService.save(postDto, user.getNickname());
-
-        List<Post> postsList = postRepository.findAll();
-
-        Post post = postsList.get(0);
-
-
-        //then
-        assertEquals("이히1", post.getTitle(), "저장된 게시글 아이디 확인");
-        assertEquals("dd", post.getUser().getNickname(), "작성자 닉네임 확인");
-        assertEquals("오홍", post.getContent(), "저장된 게시글 내용 확인");
+    private void clear(){
+        em.flush();
+        em.clear();
     }
 
+    @BeforeEach
+    private void joinAndSetAuthentication() throws Exception {
+        userService.join(new UserJoinDto(USERNAME,PASSWORD,"zmfmfm","zmfmfm23@zmzmz.com","000-1111-1111"));
+
+        SecurityContext emptyContext = SecurityContextHolder.createEmptyContext();
+        emptyContext.setAuthentication(
+                new UsernamePasswordAuthenticationToken(
+                        User.builder()
+                                .username(USERNAME)
+                                .password(PASSWORD)
+                                .roles(Role.USER.toString())
+                                .build(),
+                        null)
+        );
+        SecurityContextHolder.setContext(emptyContext);
+        clear();
+    }
+
+    private void setAnotherAuthentication() throws Exception {
+        userService.join(new UserJoinDto(USERNAME+"hjk321",PASSWORD,"dngngn","zlglgl@zmzmz.com","000-2222-1111"));
+        SecurityContext emptyContext = SecurityContextHolder.createEmptyContext();
+        emptyContext.setAuthentication(
+                new UsernamePasswordAuthenticationToken(
+                        User.builder()
+                                .username(USERNAME+"hjk321")
+                                .password(PASSWORD)
+                                .roles(Role.USER.toString())
+                                .build(),
+                        null)
+        );
+        SecurityContextHolder.setContext(emptyContext);
+        clear();
+    }
+
+
+
     @Test
-    public void 게시글_전체_조회() throws Exception {
+    public void 게시글_저장_및_ID로_게시글_조회() throws Exception {
         //given
-        User user = User.builder().username("kjh").nickname("dd").phonenumber("01090765644").email("dlgl@zmfmfm.gnw").build();
-        userRepository.save(user);
-
-        PostDto.Request postDto1 = PostDto.Request.builder()
-                .title("이히1")
-                .user(user)
-                .content("오홍")
-                .build();
-
-        PostDto.Request postDto2 = PostDto.Request.builder()
-                .title("이히2")
-                .user(user)
-                .content("오홍")
-                .build();
-
-        PostDto.Request postDto3 = PostDto.Request.builder()
-                .title("이히3")
-                .user(user)
-                .content("오홍")
-                .build();
-
-        PostDto.Request postDto4 = PostDto.Request.builder()
-                .title("이히4")
-                .user(user)
-                .content("오홍")
-                .build();
-
-        postService.save(postDto1, user.getNickname());
-        postService.save(postDto2, user.getNickname());
-        postService.save(postDto3, user.getNickname());
-        postService.save(postDto4, user.getNickname());
+        String title = "안녕";
+        String content = "저녁먹었니?";
+        PostSaveDto postSaveDto = new PostSaveDto(title, content);
 
         //when
-        List<PostDto.Response> all = postService.findAll();
+        postService.save(postSaveDto);
+        clear();
+
+        Long id = postRepository.findAll().get(0).getId();
 
         //then
-        assertEquals("이히1", all.get(0).getTitle(), "저장된 게시글 아이디 확인");
-        assertEquals("이히2", all.get(1).getTitle(), "저장된 게시글 아이디 확인");
-        assertEquals("이히3", all.get(2).getTitle(), "저장된 게시글 아이디 확인");
-        assertEquals("이히4", all.get(3).getTitle(), "저장된 게시글 아이디 확인");
-
-        assertEquals("dd", all.get(0).getUser().getNickname(), "작성자 닉네임 확인");
-        assertEquals("dd", all.get(1).getUser().getNickname(), "작성자 닉네임 확인");
-        assertEquals("dd", all.get(2).getUser().getNickname(), "작성자 닉네임 확인");
-        assertEquals("dd", all.get(3).getUser().getNickname(), "작성자 닉네임 확인");
-
-        assertEquals("오홍", all.get(0).getContent());
-        assertEquals("오홍", all.get(1).getContent());
-        assertEquals("오홍", all.get(2).getContent());
-        assertEquals("오홍", all.get(3).getContent());
+        PostInfoDto findPost = postService.getPostInfo(id);
+        assertThat(findPost.getPostId()).isEqualTo(id);
+        assertThat(findPost.getTitle()).isEqualTo(title);
+        assertThat(findPost.getContent()).isEqualTo(content);
 
     }
 
     @Test
-    public void ID로_게시글_조회() throws Exception {
+    public void 게시글_저장_실패_제목이나_내용없음() throws Exception {
         //given
-        User user = User.builder().username("kjh").nickname("dd").phonenumber("01090765644").email("dlgl@zmfmfm.gnw").build();
-        userRepository.save(user);
+        String title = "안녕";
+        String content = "저녁먹었니?";
 
-        PostDto.Request postDto1 = PostDto.Request.builder()
-                .title("이히1")
-                .user(user)
-                .content("오홍")
-                .build();
+        PostSaveDto postSaveDto1 = new PostSaveDto(title, null);
+        PostSaveDto postSaveDto2 = new PostSaveDto(null, content);
 
-        Long id = postService.save(postDto1, user.getNickname());
+        int result = postRepository.findAll().size();
 
-        CommentDto.Request commentDto = CommentDto.Request.builder()
-                .content("히히")
-                .build();
+        //when, then
+        assertThat(result).isEqualTo(0);
 
-        commentService.save(id, user.getNickname(), commentDto);
-
-
-        //when
-        PostDto.Response search = postService.findById(id);
-
-
-        //then
-        assertEquals("이히1", search.getTitle(), "ID로 찾은 게시글의 제목이 같은지");
-        assertEquals("dd", search.getUser().getNickname(), "ID로 찾은 게시글의 작성자가 같은지");
-        assertEquals("오홍", search.getContent(), "ID로 찾은 게시글의 내용이 같은지");
 
     }
 
     @Test
     public void 게시글_수정() throws Exception {
         //given
-        User user = User.builder().username("kjh").nickname("dd").phonenumber("01090765644").email("dlgl@zmfmfm.gnw").build();
-        userRepository.save(user);
+        String title = "안녕";
+        String content = "저녁먹었니?";
+        PostSaveDto postSaveDto = new PostSaveDto(title, content);
 
-        PostDto.Request postDto1 = PostDto.Request.builder()
-                .title("이히1")
-                .user(user)
-                .content("오홍")
-                .build();
-
-        Long id = postService.save(postDto1, user.getNickname());
+        postService.save(postSaveDto);
+        clear();
 
         //when
+        String changeTitle = "안녕못해";
+        String changeContent = "안먹었어";
 
-        PostDto.Request updateDto = PostDto.Request.builder()
-                .title("히히")
-                .content("호호")
-                .build();
-
-        postService.update(id, updateDto);
-        PostDto.Response update = postService.findById(id);
+        Long id = postRepository.findAll().get(0).getId();
+        PostUpdateDto postUpdateDto = new PostUpdateDto(Optional.of(changeTitle), Optional.of(changeContent));
+        postService.update(id, postUpdateDto);
 
         //then
-        assertEquals("히히", update.getTitle());
-        assertEquals("호호", update.getContent());
+        Post post = postRepository.findById(id).orElseThrow(() -> new PostException(PostExceptionType.POST_NOT_FOUND));
+        assertThat(post.getTitle()).isEqualTo(changeTitle);
+        assertThat(post.getContent()).isEqualTo(changeContent);
+
+    }
+
+    @Test
+    public void 게시글_제목만_수정() throws Exception {
+        //given
+        String title = "안녕";
+        String content = "저녁먹었니?";
+        PostSaveDto postSaveDto = new PostSaveDto(title, content);
+
+        postService.save(postSaveDto);
+        clear();
+
+        //when
+        String changeTitle = "안녕못해";
+
+        Long id = postRepository.findAll().get(0).getId();
+        PostUpdateDto postUpdateDto = new PostUpdateDto(Optional.of(changeTitle), Optional.empty());
+        postService.update(id, postUpdateDto);
+
+        //then
+        Post post = postRepository.findById(id).orElseThrow(() -> new PostException(PostExceptionType.POST_NOT_FOUND));
+        assertThat(post.getTitle()).isEqualTo(changeTitle);
+        assertThat(post.getContent()).isEqualTo(content);
+
+    }
+
+    @Test
+    public void 게시글_내용만_수정() throws Exception {
+        //given
+        String title = "안녕";
+        String content = "저녁먹었니?";
+        PostSaveDto postSaveDto = new PostSaveDto(title, content);
+
+        postService.save(postSaveDto);
+        clear();
+
+        //when
+        String changeContent = "안먹었어";
+
+        Long id = postRepository.findAll().get(0).getId();
+        PostUpdateDto postUpdateDto = new PostUpdateDto(Optional.empty(), Optional.of(changeContent));
+        postService.update(id, postUpdateDto);
+
+        //then
+        Post post = postRepository.findById(id).orElseThrow(() -> new PostException(PostExceptionType.POST_NOT_FOUND));
+        assertThat(post.getTitle()).isEqualTo(title);
+        assertThat(post.getContent()).isEqualTo(changeContent);
 
     }
 
     @Test
     public void 게시글_삭제() throws Exception {
         //given
-        User user = User.builder().username("kjh").nickname("dd").phonenumber("01090765644").email("dlgl@zmfmfm.gnw").build();
-        userRepository.save(user);
+        String title = "안녕";
+        String content = "저녁먹었니?";
+        PostSaveDto postSaveDto = new PostSaveDto(title, content);
 
-        PostDto.Request postDto1 = PostDto.Request.builder()
-                .title("이히1")
-                .user(user)
-                .content("오홍")
-                .build();
-
-        Long id = postService.save(postDto1, user.getNickname());
+        postService.save(postSaveDto);
+        clear();
 
         //when
+        Long id = postRepository.findAll().get(0).getId();
         postService.delete(id);
 
         //then
-        PostException thrown = assertThrows(PostException.class, () -> postService.findById(id));
-        assertEquals("찾는 게시글이 없습니다", thrown.getExceptionType().getErrorMessage());
+        int result = postRepository.findAll().size();
+        assertThat(result).isEqualTo(0);
 
+    }
+
+    @Test
+    public void 게시글_삭제실패_권한이없음() throws Exception {
+        //given
+        String title = "안녕";
+        String content = "저녁먹었니?";
+        PostSaveDto postSaveDto = new PostSaveDto(title, content);
+
+        postService.save(postSaveDto);
+        clear();
+
+        //when
+        Long id = postRepository.findAll().get(0).getId();
+
+        //then
+        setAnotherAuthentication();
+
+        assertThrows(PostException.class, ()-> postService.delete(id));
 
     }
 

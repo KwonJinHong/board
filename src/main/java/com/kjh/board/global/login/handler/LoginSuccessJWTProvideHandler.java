@@ -14,7 +14,6 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public class LoginSuccessJWTProvideHandler extends SimpleUrlAuthenticationSuccessHandler {
-
     private final JwtService jwtService;
 
     @Override

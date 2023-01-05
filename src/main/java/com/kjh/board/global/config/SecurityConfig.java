@@ -74,7 +74,7 @@ public class SecurityConfig {
 
     @Bean
     public LoginSuccessJWTProvideHandler loginSuccessJWTProvideHandler(){
-        return new LoginSuccessJWTProvideHandler(userRepository, jwtService);
+        return new LoginSuccessJWTProvideHandler(jwtService);
     }
 
     @Bean

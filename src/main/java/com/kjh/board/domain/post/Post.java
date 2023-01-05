@@ -29,6 +29,7 @@ public class Post extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    //==게시글 삭제시, 달려있는 댓글 모두 같이 삭제 처리==//
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
@@ -44,18 +45,20 @@ public class Post extends BaseTimeEntity {
     }
 
     @Builder
-    public Post(Long id, User user, String title, String content) {
-        this.id = id;
-        this.user = user;
+    public Post(String title, String content) {
         this.title = title;
         this.content = content;
 
     }
 
     //==게시글 업데이트==//
-    public void update(String title, String content) {
+    public void updateTitle(String title) {
         this.title = title;
+    }
+
+    public void updateContent(String content) {
         this.content = content;
     }
+
 
 }

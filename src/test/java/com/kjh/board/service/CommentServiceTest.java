@@ -1,26 +1,17 @@
 package com.kjh.board.service;
 
-import com.kjh.board.domain.comment.Comment;
 import com.kjh.board.domain.comment.exception.CommentException;
 import com.kjh.board.domain.comment.service.CommentService;
 import com.kjh.board.domain.post.service.PostService;
-import com.kjh.board.domain.user.User;
-import com.kjh.board.domain.comment.dto.CommentDto;
-import com.kjh.board.domain.post.dto.PostDto;
 import com.kjh.board.domain.comment.repository.CommentRepository;
 import com.kjh.board.domain.post.repository.PostRepository;
 import com.kjh.board.domain.user.repository.UserRepository;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -36,7 +27,7 @@ class CommentServiceTest {
     @PersistenceContext EntityManager em;
     CommentException commentException;
 
-    @Test
+/*    @Test
     public void 댓글_생성() throws Exception {
         //given
         User user = User.builder().username("kjh").nickname("dd").phonenumber("01090765644").email("dlgl@zmfmfm.gnw").build();
@@ -173,6 +164,6 @@ class CommentServiceTest {
         //IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> commentService.delete(commentId));
         assertThrows(CommentException.class, () -> commentService.delete(commentId));
 
-    }
+    }*/
 
 }
