@@ -125,4 +125,9 @@ DataBase
  - [JWT 관련 내용정리](https://github.com/KwonJinHong/Springboot/blob/master/Board%EA%B5%AC%ED%98%84%EA%B8%B0/JWT_%EA%B4%80%EB%A0%A8_%EA%B5%AC%ED%98%84%EA%B8%B0.md)
  - UserDto가 기존의 Request와 Response로 구분되어 있긴 했지만, 기존 UserDTO를 삭제하고 좀 더 메서드 용도에 맞는 DTO들로 세분화 (UserJoinDto, UserInfoDto, UserUpdateDto)
  
+ 2023-1-4 수
+ - UserApiController을 구현하였다. UserService에서 구현했던 메서드들을 각 API 요청이 오면 실행된다.
+ - @DeleteMapping 에 @RequestBody JSON 파싱 오류가 나서 한참을 삽질했다. 결론은 Delete 요청은 HTTP 자체적으로 Body가 없는것을 권장한다. 따라서 @RequestBody를 통해 DTO를 전달해서 처리를 하고 싶었으나, 일단은 방법을 찾지 못해서 @PathVariable로 일단 id를 받아와 해당 Id를 갖는 유저를 탈퇴시키는 걸로 일단 기능을 변경하였다. 원래대로라면 비밀번호를 입력받아 확인 후에 탈퇴 처리를 하는 과정으로 만들고 싶었으나 이는 추후에 좀 더 알아보고 구현하는 걸로 해야겠다.
+- UserApiControllerTest를 통해 각 API 별로 동작을 검증하였다.
+ 
  </details>
