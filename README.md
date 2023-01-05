@@ -129,5 +129,8 @@ DataBase
  - UserApiController을 구현하였다. UserService에서 구현했던 메서드들을 각 API 요청이 오면 실행된다.
  - @DeleteMapping 에 @RequestBody JSON 파싱 오류가 나서 한참을 삽질했다. 결론은 Delete 요청은 HTTP 자체적으로 Body가 없는것을 권장한다. 따라서 @RequestBody를 통해 DTO를 전달해서 처리를 하고 싶었으나, 일단은 방법을 찾지 못해서 @PathVariable로 일단 id를 받아와 해당 Id를 갖는 유저를 탈퇴시키는 걸로 일단 기능을 변경하였다. 원래대로라면 비밀번호를 입력받아 확인 후에 탈퇴 처리를 하는 과정으로 만들고 싶었으나 이는 추후에 좀 더 알아보고 구현하는 걸로 해야겠다.
 - UserApiControllerTest를 통해 각 API 별로 동작을 검증하였다.
+
+2023-1-5 목
+- PostMan으로 UserApiController의 동작을 확인하던 중, 이메일에 숫자가 들어가면 오류가 나던 문제와 로그인 성공 시에도 Refresh Token이 DB에 저장되지 않았던 문제가 발생하여 두 문제를 수정했다. 첫번째 문제는 이메일 형식의 자바 정규식에 숫자를 입력으로 포함시켜 해결했고, 두번째 문제는 로그인 성공 했을때 Handler에서 Refresh Token 발급을 JwtService를 통해 저장하는 방식으로 변경하여 해결했다. 
  
  </details>
