@@ -24,7 +24,7 @@ public class UserJoinDto {
     @Size(min=2, message = "닉네임이 너무 짧습니다.")
     private final String nickname;
     @NotBlank
-    @Pattern(regexp = "^[_a-z|d-]+(.[_a-z|d-]+)*@(?:\\w+\\.)+\\w+$",
+    @Pattern(regexp = "^[_a-z\\d-]+(.[_a-z\\d-]+)*@(?:\\w+\\.)+\\w+$",
             message = "이메일 형식으로 입력해 주세요.")
     private final String email;
     @NotBlank

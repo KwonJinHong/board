@@ -15,7 +15,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class LoginSuccessJWTProvideHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final UserRepository userRepository;
     private final JwtService jwtService;
 
     @Override
@@ -31,9 +30,8 @@ public class LoginSuccessJWTProvideHandler extends SimpleUrlAuthenticationSucces
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
 
         //유저에게 Refresh Token 저장
-        userRepository.findByUsername(username).ifPresent(
-                user -> user.updateRefreshToken(refreshToken)
-        );
+        jwtService.updateRefreshToken(username, refreshToken);
 
     }
+
 }
