@@ -54,7 +54,7 @@ class UserApiControllerTest {
     private String password = "tlqkfdho!@#13"; // 알파벳, 숫자, 특수문자 조합
     private String nickname = "zmfmfm"; // 2글자 이상
     private String email = "zmfmfm@zmfm.com"; // 이메일 형식
-    private String phonenumber = "000-1111-2222"; // -을 포함한 전화번호
+    private String phoneNumber = "000-1111-2222"; // -을 포함한 전화번호
 
     private void clear(){
         em.flush();
@@ -101,7 +101,7 @@ class UserApiControllerTest {
     @Test
     public void 회원가입_성공() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
 
         //when
         join(joinData);
@@ -115,10 +115,10 @@ class UserApiControllerTest {
     @Test
     public void 회원가입_실패_필수_입력_정보_없음() throws Exception {
         //given
-        String noUsernameJoinData = objectMapper.writeValueAsString(new UserJoinDto(null, password, nickname, email, phonenumber));
-        String noPasswordJoinData = objectMapper.writeValueAsString(new UserJoinDto(username, null, nickname, email, phonenumber));
-        String noNicknameJoinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, null, email, phonenumber));
-        String noEmailJoinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, null, phonenumber));
+        String noUsernameJoinData = objectMapper.writeValueAsString(new UserJoinDto(null, password, nickname, email, phoneNumber));
+        String noPasswordJoinData = objectMapper.writeValueAsString(new UserJoinDto(username, null, nickname, email, phoneNumber));
+        String noNicknameJoinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, null, email, phoneNumber));
+        String noEmailJoinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, null, phoneNumber));
         String noPhonenumberJoinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, null));
 
         //when, then
@@ -134,7 +134,7 @@ class UserApiControllerTest {
     @Test
     public void 회원정보수정_성공() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
 
         join(joinData);
 
@@ -158,7 +158,7 @@ class UserApiControllerTest {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UserException(UserExceptionType.NOT_FOUND_USER));
         assertThat(user.getNickname()).isEqualTo(nickname+"히히");
         assertThat(user.getEmail()).isEqualTo("change@chnage.com");
-        assertThat(user.getPhonenumber()).isEqualTo("999-9999-9999");
+        assertThat(user.getPhoneNumber()).isEqualTo("999-9999-9999");
         assertThat(userRepository.findAll().size()).isEqualTo(1);
 
     }
@@ -166,7 +166,7 @@ class UserApiControllerTest {
     @Test
     public void 회원정보수정_닉네임만변경_성공() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
 
         join(joinData);
 
@@ -187,7 +187,7 @@ class UserApiControllerTest {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UserException(UserExceptionType.NOT_FOUND_USER));
         assertThat(user.getNickname()).isEqualTo(nickname+"히히");
         assertThat(user.getEmail()).isEqualTo(email);
-        assertThat(user.getPhonenumber()).isEqualTo(phonenumber);
+        assertThat(user.getPhoneNumber()).isEqualTo(phoneNumber);
         assertThat(userRepository.findAll().size()).isEqualTo(1);
 
     }
@@ -195,7 +195,7 @@ class UserApiControllerTest {
     @Test
     public void 회원정보수정_이메일만변경_성공() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
 
         join(joinData);
 
@@ -217,7 +217,7 @@ class UserApiControllerTest {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UserException(UserExceptionType.NOT_FOUND_USER));
         assertThat(user.getNickname()).isEqualTo(nickname);
         assertThat(user.getEmail()).isEqualTo("change@chnage.com");
-        assertThat(user.getPhonenumber()).isEqualTo(phonenumber);
+        assertThat(user.getPhoneNumber()).isEqualTo(phoneNumber);
         assertThat(userRepository.findAll().size()).isEqualTo(1);
 
     }
@@ -225,7 +225,7 @@ class UserApiControllerTest {
     @Test
     public void 회원정보수정_전화번호만변경_성공() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
 
         join(joinData);
 
@@ -247,14 +247,14 @@ class UserApiControllerTest {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UserException(UserExceptionType.NOT_FOUND_USER));
         assertThat(user.getNickname()).isEqualTo(nickname);
         assertThat(user.getEmail()).isEqualTo(email);
-        assertThat(user.getPhonenumber()).isEqualTo("999-9999-9999");
+        assertThat(user.getPhoneNumber()).isEqualTo("999-9999-9999");
         assertThat(userRepository.findAll().size()).isEqualTo(1);
     }
 
     @Test
     public void 비밀번호수정_성공() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
         join(joinData);
 
         String accessToken = getAccessToken();
@@ -283,7 +283,7 @@ class UserApiControllerTest {
     @Test
     public void 비밀번호수정_실패_검증비번틀림() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
         join(joinData);
 
         String accessToken = getAccessToken();
@@ -312,7 +312,7 @@ class UserApiControllerTest {
     @Test
     public void 비밀번호수정_실패_바꾸려는_비번형식틀림() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
         join(joinData);
 
         String accessToken = getAccessToken();
@@ -340,7 +340,7 @@ class UserApiControllerTest {
     @Test
     public void 회원탈퇴_성공() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
         join(joinData);
 
         String accessToken = getAccessToken();
@@ -361,7 +361,7 @@ class UserApiControllerTest {
     @Test
     public void 내정보조회_성공() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
         join(joinData);
 
 
@@ -382,14 +382,14 @@ class UserApiControllerTest {
         assertThat(user.getUsername()).isEqualTo(map.get("username"));
         assertThat(user.getNickname()).isEqualTo(map.get("nickname"));
         assertThat(user.getEmail()).isEqualTo(map.get("email"));
-        assertThat(user.getPhonenumber()).isEqualTo(map.get("phonenumber"));
+        assertThat(user.getPhoneNumber()).isEqualTo(map.get("phonenumber"));
 
     }
 
     @Test
     public void 내정보조회_실패_JWT없음() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
         join(joinData);
 
 
@@ -408,7 +408,7 @@ class UserApiControllerTest {
     @Test
     public void 회원정보조회_성공() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
         join(joinData);
 
 
@@ -431,13 +431,13 @@ class UserApiControllerTest {
         assertThat(user.getUsername()).isEqualTo(map.get("username"));
         assertThat(user.getNickname()).isEqualTo(map.get("nickname"));
         assertThat(user.getEmail()).isEqualTo(map.get("email"));
-        assertThat(user.getPhonenumber()).isEqualTo(map.get("phonenumber"));
+        assertThat(user.getPhoneNumber()).isEqualTo(map.get("phonenumber"));
     }
 
     @Test
     public void 회원정보조회_실패_없는회원조회() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
         join(joinData);
 
 
@@ -461,7 +461,7 @@ class UserApiControllerTest {
     @Test
     public void 회원정보조회_실패_JWT없음() throws Exception {
         //given
-        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phonenumber));
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
         join(joinData);
 
         String accessToken = getAccessToken();

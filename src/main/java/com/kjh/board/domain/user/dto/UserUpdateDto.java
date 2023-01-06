@@ -11,5 +11,5 @@ public class UserUpdateDto {
 
     private final Optional<String> nickname;
     private final Optional<String> email;
-    private final Optional<String> phonenumber;
+    private final Optional<String> phoneNumber;
 }

@@ -30,9 +30,9 @@ public class UserJoinDto {
     @NotBlank
     @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}",
             message = "-을 포함하여 전화번호를 입력해주세요.")
-    private final String phonenumber;
+    private final String phoneNumber;
 
     public User toEntity() {
-        return User.builder().username(username).password(password).nickname(nickname).email(email).phonenumber(phonenumber).build();
+        return User.builder().username(username).password(password).nickname(nickname).email(email).phoneNumber(phoneNumber).build();
     }
 }

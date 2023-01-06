@@ -58,7 +58,7 @@ class JwtServiceTest {
                 .username(username)
                 .password(password)
                 .nickname("Member1")
-                .phonenumber("01012324567")
+                .phoneNumber("01012324567")
                 .email("zlflfl@zmfmfm")
                 .role(Role.USER).build();
 

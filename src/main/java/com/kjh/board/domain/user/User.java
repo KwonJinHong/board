@@ -33,7 +33,7 @@ public class User extends BaseTimeEntity {
     private String nickname; // 사용자가 정하는 닉네임
 
     @Column(length = 13, nullable = false, unique = true)
-    private String phonenumber; // 사용자 이메일
+    private String phoneNumber; // 사용자 이메일
 
     @Column(length = 50, nullable = false, unique = true)
     private String email; // 사용자 이메일
@@ -71,8 +71,8 @@ public class User extends BaseTimeEntity {
         this.email = email;
     }
 
-    public void updatePhoneNumber(String phonenumber) {
-        this.phonenumber = phonenumber;
+    public void updatePhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public void updateRefreshToken(String refreshToken) {

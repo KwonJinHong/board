@@ -70,7 +70,7 @@ public class LoginTest {
                 .nickname("Member1")
                 .role(Role.USER)
                 .email("zmfmfm@zmfmfmf.com")
-                .phonenumber("010-1111-2222")
+                .phoneNumber("010-1111-2222")
                 .build());
         clear();
     }

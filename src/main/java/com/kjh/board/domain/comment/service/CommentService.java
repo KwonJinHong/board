@@ -1,15 +1,20 @@
 package com.kjh.board.domain.comment.service;
 
 import com.kjh.board.domain.comment.Comment;
+import com.kjh.board.domain.comment.dto.CommentSaveDto;
+import com.kjh.board.domain.comment.dto.CommentUpdateDto;
 import com.kjh.board.domain.comment.exception.CommentException;
 import com.kjh.board.domain.comment.exception.CommentExceptionType;
 import com.kjh.board.domain.post.Post;
-import com.kjh.board.domain.comment.dto.CommentDto;
+
 import com.kjh.board.domain.comment.repository.CommentRepository;
 import com.kjh.board.domain.post.exception.PostException;
 import com.kjh.board.domain.post.exception.PostExceptionType;
 import com.kjh.board.domain.post.repository.PostRepository;
+import com.kjh.board.domain.user.exception.UserException;
+import com.kjh.board.domain.user.exception.UserExceptionType;
 import com.kjh.board.domain.user.repository.UserRepository;
+import com.kjh.board.global.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,10 +35,12 @@ public class CommentService {
      * Create - 댓글 달기
      * */
     @Transactional
-    public Long save(Long id, String nickname, CommentDto.Request commentDto) {
-        Comment comment = commentDto.toEntity();
+    public Long save(Long id, CommentSaveDto commentSaveDto) {
+        Comment comment = commentSaveDto.toEntity();
 
-        comment.confirmWriter(userRepository.findByNickname(nickname));
+        comment.confirmWriter(userRepository.findByUsername(SecurityUtil.getLoginUsername()).orElseThrow(() ->
+                new UserException(UserExceptionType.NOT_FOUND_USER)));
+
         comment.confirmPost(postRepository.findById(id).orElseThrow(() ->
                 new PostException(PostExceptionType.POST_NOT_FOUND)));
 
@@ -42,42 +49,62 @@ public class CommentService {
         return comment.getId();
     }
 
-    /**
-     * Read - 댓글 리스트 조회
-     * */
-    public List<CommentDto.Response> findAll(Long id) {
-        //게시글 ID로 해당 게시글을 찾아옴
-        Post post = postRepository.findById(id).orElseThrow(() ->
-                new PostException(PostExceptionType.POST_NOT_FOUND));
+    @Transactional
+    public Long saveReComment(Long id, Long parentId,CommentSaveDto commentSaveDto) {
+        Comment comment = commentSaveDto.toEntity();
 
-        //해당 게시글에 있는 댓글 리스트를 가져옴
-        List<Comment> comments = post.getComments();
-        //Entity를 DTO로 변환하여 반환
-        return comments.stream().map(CommentDto.Response::new).collect(Collectors.toList());
+        comment.confirmWriter(userRepository.findByUsername(SecurityUtil.getLoginUsername()).orElseThrow(() ->
+                new UserException(UserExceptionType.NOT_FOUND_USER)));
+
+        comment.confirmPost(postRepository.findById(id).orElseThrow(() ->
+                new PostException(PostExceptionType.POST_NOT_FOUND)));
+
+        comment.confirmParent(commentRepository.findById(parentId).orElseThrow(()
+                -> new CommentException(CommentExceptionType.NOT_FOUND_COMMENT)));
+
+        commentRepository.save(comment);
+
+        return comment.getId();
     }
+
 
     /**
      * Update - 댓글 내용 수정
      * 병합(merge)방식이 아닌 Dirty Checking 방식 사용
      * */
     @Transactional
-    public void update(Long id, CommentDto.Request commentDto) {
+    public void update(Long id, CommentUpdateDto commentUpdateDto) {
         Comment comment = commentRepository.findById(id).orElseThrow(() ->
             new CommentException(CommentExceptionType.NOT_FOUND_COMMENT));
 
+        //유저 권한 검증
+        checkAuthority(comment, CommentExceptionType.NOT_AUTHORITY_UPDATE_COMMENT);
+
         //댓글 내용 수정
-        comment.update(commentDto.getContent());
+        commentUpdateDto.getContent().ifPresent(comment::updateContent);
     }
 
     /**
      * Delete - 댓글 삭제
+     * 댓글과 대댓글인 경우에 따라 판별하는 로직 -> findRemovableList()
      * */
     @Transactional
-    public void delete(Long id) {
+    public void remove(Long id) {
         Comment comment = commentRepository.findById(id).orElseThrow(() ->
                 new CommentException(CommentExceptionType.NOT_FOUND_COMMENT));
 
-        commentRepository.delete(comment);
+        //유저 권한 검증
+        checkAuthority(comment, CommentExceptionType.NOT_AUTHORITY_DELETE_COMMENT);
+
+        comment.remove();
+        List<Comment> removableCommentList = comment.findRemovableList();
+        commentRepository.deleteAll(removableCommentList);
     }
+
+    private void checkAuthority(Comment comment, CommentExceptionType commentExceptionType) {
+        if(!comment.getUser().getUsername().equals(SecurityUtil.getLoginUsername()))
+            throw new CommentException(commentExceptionType);
+    }
+
 
 }

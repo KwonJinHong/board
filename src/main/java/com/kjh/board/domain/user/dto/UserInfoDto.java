@@ -7,16 +7,16 @@ import lombok.Data;
 @Data
 public class UserInfoDto {
 
-    private final String username;
-    private final String nickname;
-    private final String email;
-    private final String phonenumber;
+    private String username;
+    private String nickname;
+    private String email;
+    private String phoneNumber;
 
     @Builder
     public UserInfoDto(User user) {
         this.username = user.getUsername();
         this.nickname = user.getNickname();
         this.email = user.getEmail();
-        this.phonenumber = user.getPhonenumber();
+        this.phoneNumber = user.getPhoneNumber();
     }
 }

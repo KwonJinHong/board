@@ -95,7 +95,7 @@ class UserServiceTest {
         assertThat(user.getUsername()).isEqualTo(userJoinDto.getUsername()); // USER ID가 같은지
         assertThat(user.getNickname()).isEqualTo(userJoinDto.getNickname()); // NickName 같은지
         assertThat(user.getEmail()).isEqualTo(userJoinDto.getEmail()); // Email 같은지
-        assertThat(user.getPhonenumber()).isEqualTo(userJoinDto.getPhonenumber()); // 전화번호 같은지
+        assertThat(user.getPhoneNumber()).isEqualTo(userJoinDto.getPhoneNumber()); // 전화번호 같은지
         assertThat(user.getRole()).isEqualTo(Role.USER); // 권한 유저가 맞는지
 
     }
@@ -158,7 +158,7 @@ class UserServiceTest {
 
         assertThat(user.getNickname()).isEqualTo(changeNickname);
         assertThat(user.getEmail()).isEqualTo(changeEmail);
-        assertThat(user.getPhonenumber()).isEqualTo(chanegPhoneNumber);
+        assertThat(user.getPhoneNumber()).isEqualTo(chanegPhoneNumber);
     }
 
     @Test
@@ -180,7 +180,7 @@ class UserServiceTest {
 
         assertThat(user.getNickname()).isEqualTo(changeNickname);
         assertThat(user.getEmail()).isEqualTo(userJoinDto.getEmail());
-        assertThat(user.getPhonenumber()).isEqualTo(userJoinDto.getPhonenumber());
+        assertThat(user.getPhoneNumber()).isEqualTo(userJoinDto.getPhoneNumber());
 
     }
 
@@ -204,7 +204,7 @@ class UserServiceTest {
 
         assertThat(user.getNickname()).isEqualTo(changeNickname);
         assertThat(user.getEmail()).isEqualTo(changeEmail);
-        assertThat(user.getPhonenumber()).isEqualTo(userJoinDto.getPhonenumber());
+        assertThat(user.getPhoneNumber()).isEqualTo(userJoinDto.getPhoneNumber());
     }
 
 
@@ -245,7 +245,7 @@ class UserServiceTest {
         assertThat(userInfo.getUsername()).isEqualTo(userJoinDto.getUsername());
         assertThat(userInfo.getNickname()).isEqualTo(userJoinDto.getNickname());
         assertThat(userInfo.getEmail()).isEqualTo(userJoinDto.getEmail());
-        assertThat(userInfo.getPhonenumber()).isEqualTo(userJoinDto.getPhonenumber());
+        assertThat(userInfo.getPhoneNumber()).isEqualTo(userJoinDto.getPhoneNumber());
 
     }
 
@@ -261,7 +261,7 @@ class UserServiceTest {
         assertThat(myInfo.getUsername()).isEqualTo(userJoinDto.getUsername());
         assertThat(myInfo.getNickname()).isEqualTo(userJoinDto.getNickname());
         assertThat(myInfo.getEmail()).isEqualTo(userJoinDto.getEmail());
-        assertThat(myInfo.getPhonenumber()).isEqualTo(userJoinDto.getPhonenumber());
+        assertThat(myInfo.getPhoneNumber()).isEqualTo(userJoinDto.getPhoneNumber());
 
 
     }

@@ -11,10 +11,10 @@ import javax.validation.constraints.NotBlank;
 public class PostSaveDto {
 
     @NotBlank(message = "제목을 입력해주세요.")
-    private final String title;
+    private String title;
 
     @NotBlank(message = "내용을 입력해주세요.")
-    private final String content;
+    private String content;
 
     public Post toEntity() {
         return Post.builder().title(title).content(content).build();

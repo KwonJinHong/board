@@ -84,7 +84,7 @@ class JwtAuthenticationProcessingFilterTest {
                 .nickname("Member1")
                 .role(Role.USER)
                 .email("zmfmfm@zmfmfmf.com")
-                .phonenumber("000-123-5555")
+                .phoneNumber("000-123-5555")
                 .build());
         clear();
     }

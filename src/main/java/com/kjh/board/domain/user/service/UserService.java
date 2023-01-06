@@ -75,7 +75,7 @@ public class UserService {
 
         userUpdateDto.getNickname().ifPresent(user::updateNickname);
         userUpdateDto.getEmail().ifPresent(user::updateEmail);
-        userUpdateDto.getPhonenumber().ifPresent(user::updatePhoneNumber);
+        userUpdateDto.getPhoneNumber().ifPresent(user::updatePhoneNumber);
     }
 
     /**
