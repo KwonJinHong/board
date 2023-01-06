@@ -138,9 +138,10 @@ DataBase
 2023-1-6 금
 - CommentDto를 이전처럼 서비스 로직의 용도에 맞게 세분화 하였다. 
 - CommentService의 기존 로직을 권한을 검증하여 댓글을 수정, 삭제 할 수 있게끔 변경하였고, 댓글 조회 기능을 사용할 일이 없을 것 같아 일단은 빼두었다.
-- 댓글과 대댓글 기능을 구현하였는데 이는 설명할 내용이 좀 길어 따로 정리하여 남기겠다. (주로 댓글과 대댓글의 삭제에 관한 내용)
+- 댓글과 대댓글 기능을 구현하였는데 이는 설명할 내용이 좀 길어 따로 정리하여 남기겠다. -> [댓글과_대댓글_구현내용_정리](https://github.com/KwonJinHong/Springboot/blob/master/Board%EA%B5%AC%ED%98%84%EA%B8%B0/%EB%8C%93%EA%B8%80%EA%B3%BC_%EB%8C%80%EB%8C%93%EA%B8%80.md)
 - CommentService의 바뀐 로직을 테스트하여 검증 완료했다.
 - User Entity의 전화번호 속성의 이름을 'phonenumber'에서 'phoneNumber'로 변경하였다.
+
 
 
  </details>
