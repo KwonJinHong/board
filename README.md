@@ -9,9 +9,10 @@
 #### 2-1. 백앤드
 주요 프레임워크 및 라이브러리
 - Java 11
-- SpringBoot 2.7.6
+- SpringBoot 2.7.7
 - JPA (Spring Data JPA)
 - Spring Security & JWT
+- 
 
 Build Tool
 - Gradle 7.6
