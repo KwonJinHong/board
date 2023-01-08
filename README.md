@@ -142,6 +142,10 @@ DataBase
 - CommentService의 바뀐 로직을 테스트하여 검증 완료했다.
 - User Entity의 전화번호 속성의 이름을 'phonenumber'에서 'phoneNumber'로 변경하였다.
 
-
+2023-1-8 일
+- QueryDSL을 프로젝트에 적용하였다.
+- PostService의 게시글 조회 로직을 수정하였다. 똑같이 Post id를 갖고 조회를 하지만, 이전과 달리 게시글만 조회하는게 아닌 해당 게시글을 쓴 유저의 정보도 같이 가져오게 된다. (fetch join -> @EntityGraph 사용)
+- 게시글 조회 시, 해당 게시글에 달린 댓글과 대댓글도 같이 가져온다. (댓글과 대댓글을 분리하는 그룹핑하는 로직 작성 -> PostInfoDto)
+- 게시글 조회 
 
  </details>
