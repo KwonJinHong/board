@@ -1,5 +1,8 @@
 package com.kjh.board.service;
 
+import com.kjh.board.domain.comment.Comment;
+import com.kjh.board.domain.comment.dto.CommentInfoDto;
+import com.kjh.board.domain.comment.repository.CommentRepository;
 import com.kjh.board.domain.comment.service.CommentService;
 import com.kjh.board.domain.post.Post;
 import com.kjh.board.domain.post.dto.PostInfoDto;
@@ -28,7 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,15 +43,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 class PostServiceTest {
 
-    @Autowired
-    PostService postService;
-
+    @Autowired PostService postService;
     @Autowired PostRepository postRepository;
-    @Autowired
-    CommentService commentService;
-
-    @Autowired
-    UserService userService;
+    @Autowired CommentRepository commentRepository;
+    @Autowired CommentService commentService;
+    @Autowired UserService userService;
 
     PostException postException;
 
@@ -248,5 +249,87 @@ class PostServiceTest {
         assertThrows(PostException.class, ()-> postService.delete(id));
 
     }
+
+    @Test
+    public void 게시글_조회() throws Exception {
+        com.kjh.board.domain.user.User user1 = userRepository.save(com.kjh.board.domain.user.User.builder().username("userDummy1").password("1q2w3e4r!!1").nickname("주함파1호").email("dlgl1@dlgl.com").phoneNumber("010-1111-2222").role(Role.USER).build());
+        com.kjh.board.domain.user.User user2 = userRepository.save(com.kjh.board.domain.user.User.builder().username("userDummy2").password("1q2w3e4r!!2").nickname("주함파2호").email("dlgl2@dlgl.com").phoneNumber("010-1112-2222").role(Role.USER).build());
+        com.kjh.board.domain.user.User user3 = userRepository.save(com.kjh.board.domain.user.User.builder().username("userDummy3").password("1q2w3e4r!!3").nickname("주함파3호").email("dlgl3@dlgl.com").phoneNumber("010-1113-2222").role(Role.USER).build());
+        com.kjh.board.domain.user.User user4 = userRepository.save(com.kjh.board.domain.user.User.builder().username("userDummy4").password("1q2w3e4r!!4").nickname("주함파4호").email("dlgl4@dlgl.com").phoneNumber("010-1114-2222").role(Role.USER).build());
+        com.kjh.board.domain.user.User user5 = userRepository.save(com.kjh.board.domain.user.User.builder().username("userDummy5").password("1q2w3e4r!!5").nickname("주함파5호").email("dlgl5@dlgl.com").phoneNumber("010-1115-2222").role(Role.USER).build());
+
+
+        Map<Integer, Long> userIdMap = new HashMap<>();
+        userIdMap.put(1,user1.getId());
+        userIdMap.put(2,user2.getId());
+        userIdMap.put(3,user3.getId());
+        userIdMap.put(4,user4.getId());
+        userIdMap.put(5,user5.getId());
+
+
+        /**
+         * Post 생성
+         */
+
+        Post post = Post.builder().title("히히").content("호호").build();
+        post.confirmWriter(user1);
+        postRepository.save(post);
+        em.flush();
+
+
+        /**
+         * Comment 생성(댓글)
+         */
+
+        final int COMMENT_COUNT = 10;
+
+        for(int i = 1; i<=COMMENT_COUNT; i++ ){
+            Comment comment = Comment.builder().content("댓글" + i).build();
+            comment.confirmWriter(userRepository.findById(userIdMap.get(i % 3 + 1)).orElse(null));
+            comment.confirmPost(post);
+            commentRepository.save(comment);
+        }
+
+
+        /**
+         * ReComment 생성(대댓글)
+         */
+        final int COMMENT_PER_RECOMMENT_COUNT = 20;
+        commentRepository.findAll().stream().forEach(comment -> {
+
+            for(int i = 1; i<=20; i++ ){
+                Comment recomment = Comment.builder().content("대댓글" + i).build();
+                recomment.confirmWriter(userRepository.findById(userIdMap.get(i % 3 + 1)).orElse(null));
+
+                recomment.confirmPost(comment.getPost());
+                recomment.confirmParent(comment);
+                commentRepository.save(recomment);
+            }
+
+        });
+
+        clear();
+
+
+        //when
+        PostInfoDto postInfo = postService.getPostInfo(post.getId());
+
+
+        //then
+        assertThat(postInfo.getPostId()).isEqualTo(post.getId());
+        assertThat(postInfo.getContent()).isEqualTo(post.getContent());
+        assertThat(postInfo.getUserDto().getUsername()).isEqualTo(post.getUser().getUsername());
+
+
+        int recommentCount = 0;
+        for (CommentInfoDto commentInfoDto : postInfo.getCommentInfoDtoList()) {
+            recommentCount += commentInfoDto.getReCommentListDtoList().size();
+        }
+
+        assertThat(postInfo.getCommentInfoDtoList().size()).isEqualTo(COMMENT_COUNT);
+        assertThat(recommentCount).isEqualTo(COMMENT_PER_RECOMMENT_COUNT * COMMENT_COUNT);
+
+    }
+
 
 }

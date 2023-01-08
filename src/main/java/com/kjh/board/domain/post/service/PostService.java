@@ -41,14 +41,16 @@ public class PostService {
 
 
     /**
-     * Read - 게시글 리스트 조회
-     * 단건 조회
+     * Read - Post + User 조회 -> 페치 조인을 사용하여 쿼리 1번
+     *       댓글&대댓글 리스트 조회 -> 쿼리 1번 발생(POST ID로 찾는 것이므로, IN쿼리가 아닌 일반 where문 발생)
+     *       (댓글과 대댓글 모두 Comment 클래스이므로, JPA는 구분할 방법이 없어서, 당연히 CommentList에 모두 나오는것이 맞다,
+     *       가지고 온 것을 가지고 우리가 구분지어주어야 한다.)
+     * yml -> batch_size 100 설정
      * */
     public PostInfoDto getPostInfo(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() ->
-                new PostException(PostExceptionType.POST_NOT_FOUND));
+        return new PostInfoDto(postRepository.findWithUserById(id)
+                .orElseThrow(() -> new PostException(PostExceptionType.POST_NOT_FOUND)));
 
-        return new PostInfoDto(post);
     }
 
     /**

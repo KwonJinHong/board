@@ -108,7 +108,6 @@ public class Comment extends BaseTimeEntity {
         return result;
     }
 
-
     //모든 자식 댓글이 삭제되었는지 판단
     private boolean isAllChildRemoved() {
         return getChildList().stream()
