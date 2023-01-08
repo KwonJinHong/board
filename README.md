@@ -12,7 +12,7 @@
 - SpringBoot 2.7.7
 - JPA (Spring Data JPA)
 - Spring Security & JWT
-- 
+- QueryDSL
 
 Build Tool
 - Gradle 7.6
@@ -147,6 +147,6 @@ DataBase
 - QueryDSL을 프로젝트에 적용하였다.
 - PostService의 게시글 조회 로직을 수정하였다. 똑같이 Post id를 갖고 조회를 하지만, 이전과 달리 게시글만 조회하는게 아닌 해당 게시글을 쓴 유저의 정보도 같이 가져오게 된다. (fetch join -> @EntityGraph 사용)
 - 게시글 조회 시, 해당 게시글에 달린 댓글과 대댓글도 같이 가져온다. (댓글과 대댓글을 분리하는 그룹핑하는 로직 작성 -> PostInfoDto)
-- 게시글 조회 
+- 게시글 조회 테스트 완료 (게시글 조회시 댓글 대댓글 별로 그룹핑해서 잘 가져오는지)
 
  </details>
