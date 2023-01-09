@@ -5,7 +5,9 @@ import com.kjh.board.domain.comment.dto.CommentInfoDto;
 import com.kjh.board.domain.comment.repository.CommentRepository;
 import com.kjh.board.domain.comment.service.CommentService;
 import com.kjh.board.domain.post.Post;
+import com.kjh.board.domain.post.condition.PostSearchCondition;
 import com.kjh.board.domain.post.dto.PostInfoDto;
+import com.kjh.board.domain.post.dto.PostPagingDto;
 import com.kjh.board.domain.post.dto.PostSaveDto;
 import com.kjh.board.domain.post.dto.PostUpdateDto;
 import com.kjh.board.domain.post.exception.PostException;
@@ -21,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -329,6 +332,226 @@ class PostServiceTest {
         assertThat(postInfo.getCommentInfoDtoList().size()).isEqualTo(COMMENT_COUNT);
         assertThat(recommentCount).isEqualTo(COMMENT_PER_RECOMMENT_COUNT * COMMENT_COUNT);
 
+    }
+
+    @Test
+    public void 게시글_검색_조건없음() throws Exception {
+        //given
+
+        /**
+         * User 저장
+         */
+        com.kjh.board.domain.user.User user1 = userRepository.save(com.kjh.board.domain.user.User.builder().username("userDummy1").password("1q2w3e4r!!1").nickname("주함파1호").email("dlgl1@dlgl.com").phoneNumber("010-1111-2222").role(Role.USER).build());
+
+
+        /**
+         * Post 생성
+         */
+        final int POST_COUNT = 50;
+        for(int i = 1; i<= POST_COUNT; i++ ){
+            Post post = Post.builder().title("게시글"+ i).content("내용"+i).build();
+            post.confirmWriter(user1);
+            postRepository.save(post);
+        }
+
+        clear();
+
+
+        //when
+        final int PAGE = 0;
+        final int SIZE = 20;
+        PageRequest pageRequest = PageRequest.of(PAGE, SIZE);
+
+        PostSearchCondition postSearchCondition = new PostSearchCondition();
+
+        PostPagingDto postList = postService.getPostList(pageRequest, postSearchCondition);
+
+
+        //then
+        assertThat(postList.getTotalElementCount()).isEqualTo(POST_COUNT);
+
+        assertThat(postList.getTotalPageCount()).isEqualTo((POST_COUNT % SIZE == 0)
+                ? POST_COUNT/SIZE
+                : POST_COUNT/SIZE + 1);
+
+        assertThat(postList.getCurrentPageNum()).isEqualTo(PAGE);
+        assertThat(postList.getCurrentPageElementCount()).isEqualTo(SIZE);
+    }
+
+    @Test
+    public void 게시글_검색_제목일치() throws Exception {
+        //given
+
+        /**
+         * User 저장
+         */
+        com.kjh.board.domain.user.User user1 = userRepository.save(com.kjh.board.domain.user.User.builder().username("userDummy1").password("1q2w3e4r!!1").nickname("주함파1호").email("dlgl1@dlgl.com").phoneNumber("010-1111-2222").role(Role.USER).build());
+
+
+        /**
+         * 일반 Post 생성
+         */
+        final int DEFAULT_POST_COUNT  = 100;
+        for(int i = 1; i<= DEFAULT_POST_COUNT; i++ ){
+            Post post = Post.builder().title("게시글"+ i).content("내용"+i).build();
+            post.confirmWriter(user1);
+            postRepository.save(post);
+        }
+
+        /**
+         * 제목에 SSS가 들어간 POST 생성
+         */
+        final String SEARCH_TITLE_STR = "SSS";
+
+        final int COND_POST_COUNT = 100;
+
+        for(int i = 1; i<=COND_POST_COUNT; i++ ){
+            Post post = Post.builder().title(SEARCH_TITLE_STR+ i).content("내용"+i).build();
+            post.confirmWriter(user1);
+            postRepository.save(post);
+        }
+
+        clear();
+
+
+        //when
+        final int PAGE = 2;
+        final int SIZE = 20;
+        PageRequest pageRequest = PageRequest.of(PAGE, SIZE);
+
+        PostSearchCondition postSearchCondition = new PostSearchCondition();
+        postSearchCondition.setTitle(SEARCH_TITLE_STR);
+
+        PostPagingDto postList = postService.getPostList(pageRequest, postSearchCondition);
+
+
+        //then
+        assertThat(postList.getTotalElementCount()).isEqualTo(COND_POST_COUNT);
+
+        assertThat(postList.getTotalPageCount()).isEqualTo((COND_POST_COUNT % SIZE == 0)
+                ? COND_POST_COUNT/SIZE
+                : COND_POST_COUNT/SIZE + 1);
+
+        assertThat(postList.getCurrentPageNum()).isEqualTo(PAGE);
+        assertThat(postList.getCurrentPageElementCount()).isEqualTo(SIZE);
+    }
+
+    @Test
+    public void 게시글_검색_내용일치() throws Exception {
+        //given
+
+        /**
+         * User 저장
+         */
+        com.kjh.board.domain.user.User user1 = userRepository.save(com.kjh.board.domain.user.User.builder().username("userDummy1").password("1q2w3e4r!!1").nickname("주함파1호").email("dlgl1@dlgl.com").phoneNumber("010-1111-2222").role(Role.USER).build());
+
+
+        /**
+         * Post 생성
+         */
+        final int DEFAULT_POST_COUNT  = 100;
+        for(int i = 1; i<= DEFAULT_POST_COUNT; i++ ){
+            Post post = Post.builder().title("게시글"+ i).content("내용"+i).build();
+            post.confirmWriter(user1);
+            postRepository.save(post);
+        }
+
+        /**
+         * 내용에 SSS가 들어간 POST 생성
+         */
+        final String SEARCH_CONTENT_STR = "SSS";
+
+        final int COND_POST_COUNT = 100;
+
+        for(int i = 1; i<=COND_POST_COUNT; i++ ){
+            Post post = Post.builder().title("제목"+ i).content(SEARCH_CONTENT_STR+i).build();
+            post.confirmWriter(user1);
+            postRepository.save(post);
+        }
+
+        clear();
+
+
+        //when
+        final int PAGE = 2;
+        final int SIZE = 20;
+        PageRequest pageRequest = PageRequest.of(PAGE, SIZE);
+
+        PostSearchCondition postSearchCondition = new PostSearchCondition();
+        postSearchCondition.setContent(SEARCH_CONTENT_STR);
+
+        PostPagingDto postList = postService.getPostList(pageRequest, postSearchCondition);
+
+
+        //then
+        assertThat(postList.getTotalElementCount()).isEqualTo(COND_POST_COUNT);
+
+        assertThat(postList.getTotalPageCount()).isEqualTo((COND_POST_COUNT % SIZE == 0)
+                ? COND_POST_COUNT/SIZE
+                : COND_POST_COUNT/SIZE + 1);
+
+        assertThat(postList.getCurrentPageNum()).isEqualTo(PAGE);
+        assertThat(postList.getCurrentPageElementCount()).isEqualTo(SIZE);
+    }
+
+    @Test
+    public void 게시글_검색_제목과_내용일치() throws Exception {
+        //given
+
+        /**
+         * User 저장
+         */
+        com.kjh.board.domain.user.User user1 = userRepository.save(com.kjh.board.domain.user.User.builder().username("userDummy1").password("1q2w3e4r!!1").nickname("주함파1호").email("dlgl1@dlgl.com").phoneNumber("010-1111-2222").role(Role.USER).build());
+
+
+        /**
+         * Post 생성
+         */
+        final int DEFAULT_POST_COUNT  = 100;
+        for(int i = 1; i<= DEFAULT_POST_COUNT; i++ ){
+            Post post = Post.builder().title("게시글"+ i).content("내용"+i).build();
+            post.confirmWriter(user1);
+            postRepository.save(post);
+        }
+
+        /**
+         * 제목엔 SSS 내용엔 UR가 들어간 POST 생성
+         */
+        final String SEARCH_TITLE_STR = "SSS";
+        final String SEARCH_CONTENT_STR = "UR";
+
+        final int COND_POST_COUNT = 100;
+
+        for(int i = 1; i<=COND_POST_COUNT; i++ ){
+            Post post = Post.builder().title(SEARCH_TITLE_STR + i).content(SEARCH_CONTENT_STR+i).build();
+            post.confirmWriter(user1);
+            postRepository.save(post);
+        }
+
+        clear();
+
+
+        //when
+        final int PAGE = 2;
+        final int SIZE = 20;
+        PageRequest pageRequest = PageRequest.of(PAGE, SIZE);
+
+        PostSearchCondition postSearchCondition = new PostSearchCondition();
+        postSearchCondition.setTitle(SEARCH_TITLE_STR);
+        postSearchCondition.setContent(SEARCH_CONTENT_STR);
+
+        PostPagingDto postList = postService.getPostList(pageRequest, postSearchCondition);
+
+
+        //then
+        assertThat(postList.getTotalElementCount()).isEqualTo(COND_POST_COUNT);
+
+        assertThat(postList.getTotalPageCount()).isEqualTo((COND_POST_COUNT % SIZE == 0)
+                ? COND_POST_COUNT/SIZE
+                : COND_POST_COUNT/SIZE + 1);
+
+        assertThat(postList.getCurrentPageNum()).isEqualTo(PAGE);
+        assertThat(postList.getCurrentPageElementCount()).isEqualTo(SIZE);
     }
 
 

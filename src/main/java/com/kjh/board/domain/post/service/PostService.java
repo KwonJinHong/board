@@ -1,7 +1,9 @@
 package com.kjh.board.domain.post.service;
 
 import com.kjh.board.domain.post.Post;
+import com.kjh.board.domain.post.condition.PostSearchCondition;
 import com.kjh.board.domain.post.dto.PostInfoDto;
+import com.kjh.board.domain.post.dto.PostPagingDto;
 import com.kjh.board.domain.post.dto.PostSaveDto;
 import com.kjh.board.domain.post.dto.PostUpdateDto;
 import com.kjh.board.domain.post.exception.PostException;
@@ -12,6 +14,7 @@ import com.kjh.board.domain.user.exception.UserExceptionType;
 import com.kjh.board.domain.user.repository.UserRepository;
 import com.kjh.board.global.util.security.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,6 +82,14 @@ public class PostService {
         checkAuthority(post,PostExceptionType.NOT_AUTHORITY_DELETE_POST );
 
         postRepository.delete(post);
+    }
+
+    /**
+     * 제목과 내용으로 검색해서 게시글 조회
+     * */
+    public PostPagingDto getPostList(Pageable pageable, PostSearchCondition postSearchCondition) {
+
+        return new PostPagingDto(postRepository.search(postSearchCondition, pageable));
     }
 
 
