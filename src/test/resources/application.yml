@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+#        show_sql: true
+        format_sql: true
+
+      h2:
+        console:
+          enabled: true ##임베디드 방식의 H2디비 사용
+
+
+  profiles:
+    include: jwt
+
+
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
