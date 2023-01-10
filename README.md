@@ -159,6 +159,7 @@ DataBase
 - PostApiController 작성 완료 (게시글 저장, 게시글 조회, 게시글 수정, 게시글 삭제, 게시글 검색)
 - 위 도메인에 대한 테스트 검증 완료
 - 기존 검색 @EntityGraph를 써서 페치 조인을 간단히 구현했었는데, @Query 를 써서 JPQL로 페치 조인을 구현해봄
-- 기존에 잘 돌아가던 UserApiController의 기능들이 NullPointerException이 발생해서 @NoArgumentConstructor 와 Optional 초기화를 Optional.empty()로 해주어 
+- 기존에 잘 돌아가던 UserApiController의 기능들이 NullPointerException이 발생해서 @NoArgumentConstructor 와 Optional 초기화를 Optional.empty()로 해주어 해결하였다.
+ 
 
  </details>
