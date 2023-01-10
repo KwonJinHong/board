@@ -142,7 +142,7 @@ class UserApiControllerTest {
         Map<String, Object> map = new HashMap<>();
         map.put("nickname",nickname+"히히");
         map.put("email", "change@chnage.com");
-        map.put("phonenumber", "999-9999-9999");
+        map.put("phoneNumber", "999-9999-9999");
         String updateUserData = objectMapper.writeValueAsString(map);
 
 
@@ -231,7 +231,7 @@ class UserApiControllerTest {
 
         String accessToken = getAccessToken();
         Map<String, Object> map = new HashMap<>();
-        map.put("phonenumber", "999-9999-9999");
+        map.put("phoneNumber", "999-9999-9999");
         String updateUserData = objectMapper.writeValueAsString(map);
 
 
@@ -382,7 +382,7 @@ class UserApiControllerTest {
         assertThat(user.getUsername()).isEqualTo(map.get("username"));
         assertThat(user.getNickname()).isEqualTo(map.get("nickname"));
         assertThat(user.getEmail()).isEqualTo(map.get("email"));
-        assertThat(user.getPhoneNumber()).isEqualTo(map.get("phonenumber"));
+        assertThat(user.getPhoneNumber()).isEqualTo(map.get("phoneNumber"));
 
     }
 
@@ -431,7 +431,7 @@ class UserApiControllerTest {
         assertThat(user.getUsername()).isEqualTo(map.get("username"));
         assertThat(user.getNickname()).isEqualTo(map.get("nickname"));
         assertThat(user.getEmail()).isEqualTo(map.get("email"));
-        assertThat(user.getPhoneNumber()).isEqualTo(map.get("phonenumber"));
+        assertThat(user.getPhoneNumber()).isEqualTo(map.get("phoneNumber"));
     }
 
     @Test

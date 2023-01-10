@@ -2,12 +2,14 @@ package com.kjh.board.domain.post.dto;
 
 import com.kjh.board.domain.post.Post;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class PostSaveDto {
 
     @NotBlank(message = "제목을 입력해주세요.")

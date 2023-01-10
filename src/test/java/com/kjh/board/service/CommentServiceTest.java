@@ -198,8 +198,15 @@ class CommentServiceTest {
     public void 업데이트_성공() throws Exception {
         //given
         Long postId = savePost();
-        Long parentId = saveComment();
-        Long reCommentId = saveReComment(parentId);
+        CommentSaveDto commentSaveDto = new CommentSaveDto("하이하이");
+        commentService.save(postId, commentSaveDto);
+
+        Long commentId = commentRepository.findAll().get(0).getId();
+        CommentSaveDto reCommentSaveDto = new CommentSaveDto("안뇽안뇽");
+        commentService.saveReComment(postId, commentId, reCommentSaveDto);
+
+        Long reCommentId = commentRepository.findAll().get(1).getId();
+
         clear();
 
         //when

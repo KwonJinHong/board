@@ -10,10 +10,11 @@ spring:
       hibernate:
 #        show_sql: true
         format_sql: true
+        default_batch_fetch_size: 20
 
       h2:
         console:
-          enabled: true ##임베디드 방식의 H2디비 사용
+          enabled: true
 
 
   profiles:

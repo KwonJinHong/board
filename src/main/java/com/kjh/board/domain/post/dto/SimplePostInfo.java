@@ -12,14 +12,14 @@ public class SimplePostInfo {
 
     private String title;//제목
     private String content;//내용
-    private String userName;//작성자의 이름
+    private String username;//작성자의 이름
     private String createdDate; //작성일
 
     public SimplePostInfo(Post post) {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.userName = post.getUser().getUsername();
-        this.createdDate = post.getCreatedDate();
+        this.username = post.getUser().getUsername();
+        this.createdDate = post.getCreatedDate().toString();
     }
 }
