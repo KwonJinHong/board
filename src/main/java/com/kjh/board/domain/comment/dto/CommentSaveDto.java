@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class CommentSaveDto {
 
     private String content;

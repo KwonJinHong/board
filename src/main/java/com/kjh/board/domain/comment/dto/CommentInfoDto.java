@@ -3,11 +3,13 @@ package com.kjh.board.domain.comment.dto;
 import com.kjh.board.domain.comment.Comment;
 import com.kjh.board.domain.user.dto.UserInfoDto;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
+@NoArgsConstructor
 public class CommentInfoDto {
 
     private final static String DEFAULT_DELETE_MESSAGE = "삭제된 댓글입니다.";
