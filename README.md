@@ -161,5 +161,9 @@ DataBase
 - 기존 검색 @EntityGraph를 써서 페치 조인을 간단히 구현했었는데, @Query 를 써서 JPQL로 페치 조인을 구현해봄
 - 기존에 잘 돌아가던 UserApiController의 기능들이 NullPointerException이 발생해서 @NoArgumentConstructor 와 Optional 초기화를 Optional.empty()로 해주어 해결하였다.
  
+ 2023-1-11 수
+ - CommentApiController 작성 완료 (댓글 저장, 대댓글 저장, 댓글 수정, 댓글 삭제)
+ - 위 기능에 대한 테스트 및 검증 완료
+ - 이제 프로젝트의 막바지에 다다른것 같은 느낌이 든다. 그렇지만 아직 적용해보고 싶은 것들이 남아있고, 어떤 기술을 어떻게 프로젝트에 적용했느지 정리가 필요하다고 생각한다. 일단은 Swagger를 적용하여 API 명세서를 만들어 보는 것이 다음 목표이다.
 
  </details>
