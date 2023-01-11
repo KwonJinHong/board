@@ -334,6 +334,8 @@ class PostApiControllerTest {
     }
 
 
+    @Value("${spring.data.web.pageable.default-page-size}")
+    private int pageCount;
 
     /**
      * 게시글 검색
@@ -350,7 +352,7 @@ class PostApiControllerTest {
             Post post = Post.builder().title("제목"+ i).content("내용"+i).build();
             post.confirmWriter(newUser);
             postRepository.save(post);
-            Thread.sleep(100); // 생성시간 텀을 주기 위해
+            Thread.sleep(50); // 생성시간 텀을 주기 위해
         }
 
         Map<String, Object> map = new HashMap<>();
@@ -375,7 +377,7 @@ class PostApiControllerTest {
         PostPagingDto postList = objectMapper.readValue(result.getResponse().getContentAsString(StandardCharsets.UTF_8), PostPagingDto.class);
 
         Assertions.assertThat(postList.getTotalElementCount()).isEqualTo(POST_COUNT);
-        Assertions.assertThat(postList.getCurrentPageElementCount()).isEqualTo(20);
+        Assertions.assertThat(postList.getCurrentPageElementCount()).isEqualTo(pageCount);
         Assertions.assertThat(postList.getSimpleLectureDtoList().get(0).getTitle()).isEqualTo("제목50");
         Assertions.assertThat(postList.getSimpleLectureDtoList().get(19).getTitle()).isEqualTo("제목31");
 
@@ -403,7 +405,7 @@ class PostApiControllerTest {
             Post post2 = Post.builder().title("AAA"+ i).content("BBB"+i).build();
             post2.confirmWriter(newUser);
             postRepository.save(post2);
-            Thread.sleep(100); // 생성시간 텀을 두기 위해
+            Thread.sleep(50); // 생성시간 텀을 두기 위해
         }
 
         Map<String, Object> map = new HashMap<>();
@@ -427,11 +429,12 @@ class PostApiControllerTest {
         PostPagingDto postList = objectMapper.readValue(result.getResponse().getContentAsString(StandardCharsets.UTF_8), PostPagingDto.class);
 
         Assertions.assertThat(postList.getTotalElementCount()).isEqualTo(DIFF_POST_COUNT);
-        Assertions.assertThat(postList.getCurrentPageElementCount()).isEqualTo(20);
+        Assertions.assertThat(postList.getCurrentPageElementCount()).isEqualTo(pageCount);
         Assertions.assertThat(postList.getSimpleLectureDtoList().get(0).getTitle()).isEqualTo("AAA20");
         Assertions.assertThat(postList.getSimpleLectureDtoList().get(19).getTitle()).isEqualTo("AAA1");
 
     }
+
 
 
     /**
@@ -456,7 +459,7 @@ class PostApiControllerTest {
             Post post2 = Post.builder().title("AAA"+ i).content("BBB"+i).build();
             post2.confirmWriter(newUser);
             postRepository.save(post2);
-            Thread.sleep(100); // 생성시간 텀을 두기 위해
+            Thread.sleep(50); // 생성시간 텀을 두기 위해
         }
 
         Map<String, Object> map = new HashMap<>();
@@ -480,7 +483,7 @@ class PostApiControllerTest {
         PostPagingDto postList = objectMapper.readValue(result.getResponse().getContentAsString(StandardCharsets.UTF_8), PostPagingDto.class);
 
         Assertions.assertThat(postList.getTotalElementCount()).isEqualTo(DIFF_POST_COUNT);
-        Assertions.assertThat(postList.getCurrentPageElementCount()).isEqualTo(20);
+        Assertions.assertThat(postList.getCurrentPageElementCount()).isEqualTo(pageCount);
         Assertions.assertThat(postList.getSimpleLectureDtoList().get(0).getContent()).isEqualTo("BBB20");
         Assertions.assertThat(postList.getSimpleLectureDtoList().get(19).getContent()).isEqualTo("BBB1");
 

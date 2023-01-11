@@ -5,6 +5,11 @@ spring:
     password: 1234
     driver-class-name: org.h2.Driver
 
+  data:
+    web:
+      pageable:
+        default-page-size: 20  #페이징 할 때 기본값, 20개씩 조회
+
   jpa:
     hibernate:
       ddl-auto: create
@@ -12,7 +17,7 @@ spring:
       hibernate:
 #        show_sql: true
         format_sql: true
-        default_batch_fetch_size: 100
+        default_batch_fetch_size: 100 #배치 사이즈 (Collection 조회 최적화)
 
   profiles:
     include: jwt

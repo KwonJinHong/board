@@ -9,6 +9,7 @@ import com.kjh.board.global.jwt.filter.JwtAuthenticationProcessingFilter;
 import com.kjh.board.global.login.handler.LoginFailureHandler;
 import com.kjh.board.global.login.handler.LoginSuccessJWTProvideHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,6 +33,8 @@ public class SecurityConfig {
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
+    private final CorsConfig corsConfig;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -41,10 +44,13 @@ public class SecurityConfig {
                     .csrf().disable()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
+
                     .and()
                     .authorizeRequests()
                     .antMatchers("/login", "/join","/").permitAll() // 로그인, 회원가입, 메인페이지는 인증 없이도 접근 허가
                     .anyRequest().authenticated();
+
+         http.addFilter(corsConfig.corsFilter());
 
          /**
           * 시큐리티에서 실행되는 필터의 순서가 존재하는데
