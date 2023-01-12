@@ -171,6 +171,7 @@ DataBase
  - Swagger 3.0 을 적용하여 API 명세서를 만들고 있다. 기본적으로 사용자, 게시글, 댓글 별로 API를 그룹핑하였고 각 API 마다 인증이 JWT 인증이 필요한데, 이를 한번에 해결하기 위해 JWT로 인증 토큰을 넣는 Swagger Authorize 기능을 활성화하였다.
  
  - <details> <summary> Swagger 메인 화면</summary> 
+ 
  ![스웨거 메인](https://user-images.githubusercontent.com/108498668/211986318-c5f68c58-35dc-499a-9bb0-5bcf53abba55.PNG)
  </details>
  
