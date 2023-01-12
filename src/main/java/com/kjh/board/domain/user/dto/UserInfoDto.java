@@ -1,12 +1,14 @@
 package com.kjh.board.domain.user.dto;
 
 import com.kjh.board.domain.user.User;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Schema(description = "사용자 정보")
 public class UserInfoDto {
 
     private String username;

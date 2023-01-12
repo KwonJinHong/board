@@ -35,6 +35,20 @@ public class SecurityConfig {
 
     private final CorsConfig corsConfig;
 
+    private static final String[] PERMIT_URL_ARRAY = {
+            /* swagger v2 */
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            /* swagger v3 */
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -47,7 +61,8 @@ public class SecurityConfig {
 
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/login", "/join","/").permitAll() // 로그인, 회원가입, 메인페이지는 인증 없이도 접근 허가
+                    .antMatchers("/login", "/join","/").permitAll() // 로그인, 회원가입, 메인페이지, Swagger-ui는 인증 없이도 접근 허가
+                    .antMatchers(PERMIT_URL_ARRAY).permitAll()
                     .anyRequest().authenticated();
 
          http.addFilter(corsConfig.corsFilter());

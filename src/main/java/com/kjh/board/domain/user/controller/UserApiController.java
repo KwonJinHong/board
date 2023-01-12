@@ -4,6 +4,13 @@ import com.kjh.board.domain.user.dto.*;
 import com.kjh.board.domain.user.exception.UserException;
 import com.kjh.board.domain.user.service.UserService;
 import com.kjh.board.global.util.security.SecurityUtil;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +23,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "user", description = "사용자 API")
 public class UserApiController {
 
     private final UserService userService;
@@ -25,6 +33,7 @@ public class UserApiController {
      * */
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(tags = "user", value = "회원가입", notes = "유저 정보를 입력받아 회원 가입을 합니다.")
     public void join(@Valid @RequestBody UserJoinDto userJoinDto) {
         userService.join(userJoinDto);
     }
@@ -33,6 +42,10 @@ public class UserApiController {
      * Read - 회원 정보 조회
      * */
     @GetMapping("/user/{id}")
+    @ApiOperation(tags = "user", value = "회원 정보 조회")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "회원 조회 성공", content = @Content(schema = @Schema(implementation = ResponseEntity.class)))
+    })
     public ResponseEntity getUserInfo(@Valid @PathVariable("id") Long id) {
         UserInfoDto userInfoDto = userService.getInfo(id);
         return new ResponseEntity(userInfoDto, HttpStatus.OK);
@@ -42,6 +55,7 @@ public class UserApiController {
      * Read - 내 정보 조회
      * */
     @GetMapping("/user")
+    @ApiOperation(tags = "user", value = "내 정보 조회")
     public ResponseEntity getMyInfo(HttpServletResponse response) {
         UserInfoDto userInfoDto = userService.getMyInfo();
         return new ResponseEntity(userInfoDto, HttpStatus.OK);
@@ -52,6 +66,7 @@ public class UserApiController {
      * */
     @PutMapping("/user")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(tags = "user", value = "회원 정보 수정")
     public void updateUserInfo(@Valid @RequestBody UserUpdateDto userUpdateDto) {
         userService.update(SecurityUtil.getLoginUsername(), userUpdateDto);
     }
@@ -61,6 +76,7 @@ public class UserApiController {
      * */
     @PutMapping("/user/password")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(tags = "user", value = "비밀번호 수정")
     public void updatePassword(@Valid @RequestBody UserUpdatePasswordDto userUpdatePasswordDto) throws Exception {
         userService.updatePassword(SecurityUtil.getLoginUsername(), userUpdatePasswordDto.getCheckingPassword(), userUpdatePasswordDto.getChangePassword());
     }
@@ -70,6 +86,7 @@ public class UserApiController {
      * */
     @DeleteMapping("/user/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(tags = "user", value = "회원 탈퇴")
     public void quit(@Valid @PathVariable Long id) throws Exception {
         userService.quit(id);
     }
