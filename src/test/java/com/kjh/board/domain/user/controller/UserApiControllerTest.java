@@ -3,6 +3,7 @@ package com.kjh.board.domain.user.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kjh.board.domain.user.User;
 import com.kjh.board.domain.user.dto.UserJoinDto;
+import com.kjh.board.domain.user.dto.UserQuitDto;
 import com.kjh.board.domain.user.exception.UserException;
 import com.kjh.board.domain.user.exception.UserExceptionType;
 import com.kjh.board.domain.user.repository.UserRepository;
@@ -345,17 +346,45 @@ class UserApiControllerTest {
 
         String accessToken = getAccessToken();
 
-        Long id = userRepository.findAll().get(0).getId();
+
+        String checkingPassword = objectMapper.writeValueAsString(new UserQuitDto(password));
 
         //when
         mockMvc.perform(
-                        delete("/user/" + id)
+                        post("/user")
                                 .characterEncoding(StandardCharsets.UTF_8)
-                                .header(accessHeader,BEARER+accessToken))
+                                .header(accessHeader,BEARER+accessToken)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(checkingPassword))
                 .andExpect(status().isOk());
 
         //then
         assertThrows(UserException.class, () -> userRepository.findByUsername(username).orElseThrow(() -> new UserException(UserExceptionType.NOT_FOUND_USER)));
+    }
+
+    @Test
+    public void 회원탈퇴_실패_비밀번호_틀림() throws Exception {
+        //given
+        String joinData = objectMapper.writeValueAsString(new UserJoinDto(username, password, nickname, email, phoneNumber));
+        join(joinData);
+
+        String accessToken = getAccessToken();
+
+
+        String checkingPassword = objectMapper.writeValueAsString(new UserQuitDto(password+123));
+
+        //when
+        mockMvc.perform(
+                        post("/user")
+                                .characterEncoding(StandardCharsets.UTF_8)
+                                .header(accessHeader,BEARER+accessToken)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(checkingPassword))
+                .andExpect(status().isBadRequest());
+
+        //then
+        assertThat(userRepository.findAll().size()).isEqualTo(1);
+
     }
 
     @Test

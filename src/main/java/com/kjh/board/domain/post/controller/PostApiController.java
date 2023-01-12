@@ -1,6 +1,8 @@
 package com.kjh.board.domain.post.controller;
 
 import com.kjh.board.domain.post.condition.PostSearchCondition;
+import com.kjh.board.domain.post.dto.PostInfoDto;
+import com.kjh.board.domain.post.dto.PostPagingDto;
 import com.kjh.board.domain.post.dto.PostSaveDto;
 import com.kjh.board.domain.post.dto.PostUpdateDto;
 import com.kjh.board.domain.post.service.PostService;
@@ -37,7 +39,7 @@ public class PostApiController {
      * */
     @GetMapping("/post/{postId}")
     @ApiOperation(tags = "posts", value = "게시글 조회")
-    public ResponseEntity getInfo(@PathVariable("postId") Long postId) {
+    public ResponseEntity<PostInfoDto> getInfo(@PathVariable("postId") Long postId) {
         return ResponseEntity.ok(postService.getPostInfo(postId));
     }
 
@@ -66,7 +68,7 @@ public class PostApiController {
      * */
     @GetMapping("/post")
     @ApiOperation(tags = "posts", value = "게시글 검색")
-    public ResponseEntity search(@ApiIgnore Pageable pageable, @RequestBody PostSearchCondition postSearchCondition) {
+    public ResponseEntity<PostPagingDto> search(@ApiIgnore Pageable pageable, @RequestBody PostSearchCondition postSearchCondition) {
         return ResponseEntity.ok(postService.getPostList(pageable, postSearchCondition));
     }
 

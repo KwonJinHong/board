@@ -3,6 +3,7 @@ package com.kjh.board.service;
 import com.kjh.board.domain.user.Role;
 import com.kjh.board.domain.user.dto.UserInfoDto;
 import com.kjh.board.domain.user.dto.UserJoinDto;
+import com.kjh.board.domain.user.dto.UserQuitDto;
 import com.kjh.board.domain.user.dto.UserUpdateDto;
 import com.kjh.board.domain.user.exception.UserException;
 import com.kjh.board.domain.user.exception.UserExceptionType;
@@ -216,15 +217,24 @@ class UserServiceTest {
     public void 회원탈퇴() throws Exception {
         //given
         UserJoinDto userJoinDto = setUser();
-        com.kjh.board.domain.user.User user = userRepository.findByUsername(userJoinDto.getUsername()).orElseThrow(()->
-                new UserException(UserExceptionType.NOT_FOUND_USER));
+
 
         //when
-        userService.quit(user.getId());
+        userService.quit(SecurityUtil.getLoginUsername(), PASSWORD);
 
         //then
         assertThat(assertThrows(UserException.class, ()-> userRepository.findByUsername(userJoinDto.getUsername()).orElseThrow(() ->
                 new UserException(UserExceptionType.NOT_FOUND_USER))).getExceptionType()).isEqualTo(UserExceptionType.NOT_FOUND_USER);
+
+    }
+
+    @Test
+    public void 회원탈퇴실패_비밀번호틀림() throws Exception {
+        //given
+        UserJoinDto userJoinDto = setUser();
+
+        //when, then
+        assertThat(assertThrows(UserException.class, ()-> userService.quit(SecurityUtil.getLoginUsername(), PASSWORD+12)).getExceptionType()).isEqualTo(UserExceptionType.WRONG_PASSWORD);
 
     }
 

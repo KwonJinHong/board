@@ -97,14 +97,18 @@ public class UserService {
     }
 
     /**
-     * Delete
+     * Delete -> 기존 DeleteMapping이 아닌 PostMapping으로 구현
+     * 비밀번호를 받아와 권한 확인 후, 회원 탈퇴 진행
      * 회원 탈퇴
-     * 탈퇴 시 비밀번호 필요!
      * */
     @Transactional
-    public void quit(Long id) throws Exception {
-        User user = userRepository.findById(id).orElseThrow(() ->
+    public void quit(String username, String checkingPassword) throws Exception {
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new UserException(UserExceptionType.NOT_FOUND_USER));
+
+        if (!user.isMatchPassword(passwordEncoder, checkingPassword)) {
+            throw new UserException(UserExceptionType.WRONG_PASSWORD);
+        }
 
         userRepository.delete(user);
     }
