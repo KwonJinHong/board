@@ -31,7 +31,7 @@ DataBase
 ![db설게_v3](https://user-images.githubusercontent.com/108498668/210064564-4458fd7a-01ec-4366-b294-346625ad3d40.png)
 
 ### 3. API 설계
-![스웨거유저](https://user-images.githubusercontent.com/108498668/211988152-d4ad3361-a488-42a3-b8cd-6cd0b46001df.PNG)
+![유저api](https://user-images.githubusercontent.com/108498668/212024738-4ceefb9f-b4e2-47e0-95b4-2d03c1b42d52.PNG)
 ![스웨거게시글](https://user-images.githubusercontent.com/108498668/211988034-08227958-8206-450a-83e8-2c28dc565bc9.PNG)
 ![스웨거댓글](https://user-images.githubusercontent.com/108498668/211988107-55e79638-b9c3-40f9-b784-1f0441d745db.PNG)
 
@@ -173,6 +173,8 @@ DataBase
 
  2023-1-12 목
  - Swagger 3.0 을 적용하여 API 명세서를 만들고 있다. 기본적으로 사용자, 게시글, 댓글 별로 API를 그룹핑하였고 각 API 마다 인증이 JWT 인증이 필요한데, 이를 한번에 해결하기 위해 JWT로 인증 토큰을 넣는 Swagger Authorize 기능을 활성화하였다.
+ - Swagger User API 설명 작성
+ - UserService에서 회원 탈퇴시 비밀번호를 확인한 후 회원 탈퇴를 진행하고 싶었으나, 이전에 @DeleteMapping에 따로 데이터를 담지 못했었다. 그래서 @PostMapping으로 우회하여 로직을 완성시켰다. 바꾼  대한 테스트 및 검증을 완료했다. (회원 탈퇴 : @DeleteMapping -> @PostMapping으로 변경)
  
 
  
