@@ -79,7 +79,7 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(() ->
                 new PostException(PostExceptionType.POST_NOT_FOUND));
 
-        checkAuthority(post,PostExceptionType.NOT_AUTHORITY_DELETE_POST );
+        checkAuthority(post, PostExceptionType.NOT_AUTHORITY_DELETE_POST );
 
         postRepository.delete(post);
     }

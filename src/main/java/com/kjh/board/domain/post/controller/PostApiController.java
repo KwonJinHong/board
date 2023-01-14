@@ -29,7 +29,7 @@ public class PostApiController {
      * */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/post")
-    @ApiOperation(tags = "posts", value = "게시글 저장")
+    @ApiOperation(tags = "posts", value = "게시글 저장", notes = "게시글의 제목과 내용을 입력해 게시글을 저장합니다.")
     public void save(@Valid @RequestBody PostSaveDto postSaveDto) {
         postService.save(postSaveDto);
     }
@@ -38,7 +38,7 @@ public class PostApiController {
      * Read - 게시글 조회
      * */
     @GetMapping("/post/{postId}")
-    @ApiOperation(tags = "posts", value = "게시글 조회")
+    @ApiOperation(tags = "posts", value = "게시글 조회", notes = "게시글의 ID로 해당 게시글을 조회 합니다.")
     public ResponseEntity<PostInfoDto> getInfo(@PathVariable("postId") Long postId) {
         return ResponseEntity.ok(postService.getPostInfo(postId));
     }
@@ -48,7 +48,7 @@ public class PostApiController {
      * */
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/post/{postId}")
-    @ApiOperation(tags = "posts", value = "게시글 수정")
+    @ApiOperation(tags = "posts", value = "게시글 수정", notes = "게시글의 ID로 해당 게시글의 제목이나 내용을 수정합니다. 권한이 없다면 수정할 수 없습니다.")
     public void update(@PathVariable("postId") Long postId, @RequestBody PostUpdateDto postUpdateDto) {
         postService.update(postId, postUpdateDto);
     }
@@ -58,7 +58,7 @@ public class PostApiController {
      * */
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/post/{postId}")
-    @ApiOperation(tags = "posts", value = "게시글 삭제")
+    @ApiOperation(tags = "posts", value = "게시글 삭제", notes = "게시글의 ID로 해당 게시글을 삭제합니다. 권한이 없다면 삭제할 수 없습니다.")
     public void delete(@PathVariable("postId") Long postId) {
         postService.delete(postId);
     }
@@ -67,7 +67,7 @@ public class PostApiController {
      * 게시글 검색
      * */
     @GetMapping("/post")
-    @ApiOperation(tags = "posts", value = "게시글 검색")
+    @ApiOperation(tags = "posts", value = "게시글 검색", notes ="검색하려는 키워드를 제목이나 내용으로 가진 게시글을 조회합니다.")
     public ResponseEntity<PostPagingDto> search(@ApiIgnore Pageable pageable, @RequestBody PostSearchCondition postSearchCondition) {
         return ResponseEntity.ok(postService.getPostList(pageable, postSearchCondition));
     }

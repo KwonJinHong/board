@@ -8,12 +8,16 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Schema(description = "사용자 정보")
+@Schema(description = "사용자 정보 조회 DTO")
 public class UserInfoDto {
 
+    @Schema(description = "사용자 ID")
     private String username;
+    @Schema(description = "사용자 닉네임")
     private String nickname;
+    @Schema(description = "사용자 이메일")
     private String email;
+    @Schema(description = "사용자 전화번호")
     private String phoneNumber;
 
     @Builder

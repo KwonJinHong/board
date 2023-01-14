@@ -22,7 +22,7 @@ public class CommentApiController {
      * */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/comment/{postId}")
-    @ApiOperation(tags = "comments", value = "댓글 저장")
+    @ApiOperation(tags = "comments", value = "댓글 저장", notes = "해당 ID를 가진 게시글에 내용을 입력받아 댓글로 저장합니다.")
     public void commentSave(@PathVariable("postId") Long postId, @RequestBody CommentSaveDto commentSaveDto) {
         commentService.save(postId, commentSaveDto);
     }
@@ -32,7 +32,7 @@ public class CommentApiController {
      * */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/comment/{postId}/{commentId}")
-    @ApiOperation(tags = "comments", value = "대댓글 저장")
+    @ApiOperation(tags = "comments", value = "대댓글 저장", notes = "해당 ID를 가진 게시글, 부모 댓글에 내용을 입력받아 대댓글로 저장합니다.")
     public void reCommentSave(@PathVariable("postId") Long postId,
                               @PathVariable("commentId") Long commentId, @RequestBody CommentSaveDto commentSaveDto) {
         commentService.saveReComment(postId, commentId, commentSaveDto);
@@ -42,7 +42,7 @@ public class CommentApiController {
      * Update - 댓글 수정
      * */
     @PutMapping("/comment/{commentId}")
-    @ApiOperation(tags = "comments", value = "댓글 수정")
+    @ApiOperation(tags = "comments", value = "댓글 수정", notes = "해당 ID를 가진 댓글의 내용을 수정합니다. 권한이 없다면 수정할 수 없습니다.")
     public void update(@PathVariable("commentId") Long commentId, @RequestBody CommentUpdateDto commentUpdateDto) {
         commentService.update(commentId, commentUpdateDto);
     }
@@ -51,7 +51,7 @@ public class CommentApiController {
      * Delete - 댓글 삭제
      * */
     @DeleteMapping("/comment/{commentId}")
-    @ApiOperation(tags = "comments", value = "댓글 삭제")
+    @ApiOperation(tags = "comments", value = "댓글 삭제", notes = "해당 ID를 가진 댓글을 삭제합니다. 권한이 없다면 삭제할 수 없습니다.")
     public void delete(@PathVariable("commentId") Long commentId) {
         commentService.remove(commentId);
     }

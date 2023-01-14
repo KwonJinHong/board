@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Schema(description = "사용자 회원 가입 정보")
+@Schema(description = "사용자 회원 가입 정보 DTO")
 public class UserJoinDto {
 
     @NotBlank

@@ -39,7 +39,7 @@ public class SwaggerConfig {
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Board Rest API Documentation")
-                .description("게시판 rest api practice.")
+                .description("게시판 Rest API 명세서")
                 .version("0.1")
                 .build();
     }

@@ -4,6 +4,7 @@ import com.kjh.board.domain.comment.Comment;
 import com.kjh.board.domain.comment.dto.CommentInfoDto;
 import com.kjh.board.domain.post.Post;
 import com.kjh.board.domain.user.dto.UserInfoDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,14 +14,19 @@ import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
+@Schema(description = "게시글 조회 정보 DTO")
 public class PostInfoDto {
 
+    @Schema(description = "게시글 ID")
     private Long postId;
+    @Schema(description = "게시글 제목")
     private String title;
+    @Schema(description = "게시글 내용")
     private String content;
 
+    @Schema(description = "게시글 작성자에 대한 정보")
     private UserInfoDto userDto;//작성자에 대한 정보
-
+    @Schema(description = "게시글에 달린 댓글들 정보")
     private List<CommentInfoDto> commentInfoDtoList;//댓글 정보들
 
     public PostInfoDto(Post post) {

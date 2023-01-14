@@ -59,6 +59,9 @@ public class UserApiController {
      * */
     @GetMapping("/user")
     @ApiOperation(tags = "user", value = "내 정보 조회", notes = "로그인 된 회원 자신의 정보를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "내 정보 조회 성공")
+    })
     public ResponseEntity<UserInfoDto> getMyInfo(HttpServletResponse response) {
         UserInfoDto userInfoDto = userService.getMyInfo();
         return new ResponseEntity<>(userInfoDto, HttpStatus.OK);
@@ -69,7 +72,7 @@ public class UserApiController {
      * */
     @PutMapping("/user")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(tags = "user", value = "회원 정보 수정", notes = "닉네임, 이메일 주소, 전화번호 등을 바꾸거나 수정합니다.")
+    @ApiOperation(tags = "user", value = "회원 정보 수정", notes = "닉네임, 이메일 주소, 전화번호 등을 바꾸거나 수정합니다. 권한이 없다면 수정할 수 없습니다.")
     public void updateUserInfo(@Valid @RequestBody UserUpdateDto userUpdateDto) {
         userService.update(SecurityUtil.getLoginUsername(), userUpdateDto);
     }
