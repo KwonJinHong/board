@@ -13,6 +13,7 @@
 - JPA (Spring Data JPA)
 - Spring Security & JWT
 - QueryDSL
+- 
 
 Build Tool
 - Gradle 7.6
@@ -175,6 +176,9 @@ DataBase
  - Swagger 3.0 을 적용하여 API 명세서를 만들고 있다. 기본적으로 사용자, 게시글, 댓글 별로 API를 그룹핑하였고 각 API 마다 인증이 JWT 인증이 필요한데, 이를 한번에 해결하기 위해 JWT로 인증 토큰을 넣는 Swagger Authorize 기능을 활성화하였다.
  - Swagger User API 설명 작성
  - UserService에서 회원 탈퇴시 비밀번호를 확인한 후 회원 탈퇴를 진행하고 싶었으나, 이전에 @DeleteMapping에 따로 데이터를 담지 못했었다. 그래서 @PostMapping으로 우회하여 로직을 완성시켰다. 바꾼  대한 테스트 및 검증을 완료했다. (회원 탈퇴 : @DeleteMapping -> @PostMapping으로 변경)
+ 
+ 2023-1-14 토
+ - 지난번 Swagger 3.0을 적용하여 인증을 받아 API를 사용할 수 있게 적용해놓았었다. 이번에는 각 User, Post, Comment 관련 DTO들에 관한 설명과 각 API 관한 설명을 적용하여 API 명세서를 더 자세히 작성하였다. 적용해보면서 느낀점은 어노테이션을 활용해서 쉽게 API 명세서를 작성할 수 있는 점이 큰 장점으로 느껴졌다. 하지만 어노테이션을 사용하니까 기존보다 코드들이 좀 복잡하게 보인다는 단점도 느껴졌다. 하지만 단점보다는 장점이 더 큰 것 같아 적용하길 잘한 것 같다.
  
 
  
