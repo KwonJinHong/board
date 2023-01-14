@@ -13,7 +13,7 @@
 - JPA (Spring Data JPA)
 - Spring Security & JWT
 - QueryDSL
-- 
+- Swagger 3.0
 
 Build Tool
 - Gradle 7.6
